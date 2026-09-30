@@ -1,88 +1,74 @@
 # TagLab — GTM, GTG e GA4
 
-Site estático de testes. Contêiner padrão: **GTM-KW59VB3X**.
+O padrão é **GA4 direto, G-K3P3QWNJ38**, carregado no `<head>`. O laboratório envia os eventos ao ID escolhido sem depender de tags criadas no GTM.
 
-## Publicar na Vercel pelo GitHub
+## Deploy deste repositório na Vercel
 
-1. Extraia o ZIP.
-2. Crie um repositório no GitHub e coloque nele o conteúdo da pasta `taglab-vercel`.
-3. A raiz do repositório deve conter `vercel.json`, `README.md` e a pasta `public/`.
-4. Na Vercel, escolha Add New → Project e importe esse repositório.
-5. Use Framework Preset **Other**, Root Directory **./**, Build Command vazio, Install Command vazio e Output Directory **public**. O `vercel.json` já define essas opções.
-6. Clique Deploy e abra a URL gerada.
+O código está em uma subpasta. Ao importar `GiovanniDEVazevedo/Simulador_GTM`, use:
 
-Não coloque apenas o ZIP no repositório: envie os arquivos extraídos. Não é preciso instalar Node, React ou dependências para esse site.
+- Root Directory: `taglab-vercel`
+- Framework Preset: Other
+- Build Command: vazio
+- Install Command: vazio
+- Output Directory: `public`
 
-## Publicar com CLI (opcional)
+O `vercel.json` nessa pasta já configura framework, comandos e saída. Após um commit em main, confira se o novo deployment terminou com sucesso. A atualização do GitHub não comprova que o site publicado já mudou.
 
-Na pasta que contém `vercel.json`:
+## Primeiro teste de coleta
 
-```bash
-npx vercel
-```
+1. Abra a nova versão publicada.
+2. Se já usou o simulador, entre em Configuração → Restaurar configuração padrão. Preferências antigas do navegador são preservadas até você restaurar.
+3. Confirme Modo GA4 direto e ID `G-K3P3QWNJ38`.
+4. Em Consentimento, aceite analytics_storage (ou Aceitar tudo para testar todos os sinais).
+5. Navegue na loja e adicione produtos ao carrinho.
+6. No GA4 da mesma propriedade, confira Tempo real e DebugView. O modo debug está ativo por padrão.
+7. No Network do navegador, procure requisições `collect` com `tid=G-K3P3QWNJ38`. Bloqueadores podem impedir scripts ou requisições.
 
-Esse comando cria um preview. Para publicar em produção:
+O monitor comprova o push local, não o recebimento pelo GA4. O aviso do fluxo não é a única forma de validar a instalação.
 
-```bash
-npx vercel --prod
-```
+## Configuração por pessoa
 
-A CLI pode solicitar login e seleção de conta/projeto.
+Cada usuário pode escolher GA4 direto, GTM ou somente dataLayer na aba Configuração. Os IDs, o modo debug e o caminho do gateway ficam apenas no localStorage daquele navegador. Salvar recarrega a página; apenas o carregador do modo escolhido é executado.
 
-## Executar localmente
+Os IDs padrão ficam em `window.TAGLAB_DEFAULT_GA4_ID` e `window.TAGLAB_DEFAULT_GTM_ID`, no início de `public/index.html`. O contêiner padrão disponível para o modo GTM é `GTM-KW59VB3X`.
 
-Com Python instalado, a partir da raiz do projeto:
+No modo GTM, configure uma Google tag e tags de evento GA4 no contêiner, seguindo o Plano de mensuração do simulador. Nesse modo, os pushes no dataLayer dependem dessas tags para chegar ao GA4; o carregador GA4 direto fica desativado.
+
+## Consentimento e duplicação
+
+O Consent Mode v2 inicializa antes das tags. As quatro permissões são denied por padrão. A seleção pode ser alterada na aba Consentimento. Não substitui uma CMP de produção.
+
+O GA4 direto usa `send_page_view: false` e envia page_view manualmente na navegação. Desative também "Page changes based on browser history events" na Medição otimizada do fluxo para evitar page_views extras. Escolha uma estratégia para cliques, formulários, downloads e vídeos, pois a Medição otimizada pode gerar eventos além dos eventos manuais do laboratório.
+
+O aplicativo não carrega uma segunda cópia da tag inicializada no head. O noscript no início do body continua fixo em GTM-KW59VB3X e só atua quando JavaScript está desativado.
+
+## Testar localmente
+
+Na pasta `taglab-vercel`, execute:
 
 ```bash
 python -m http.server 8000 --directory public
 ```
 
-Abra http://localhost:8000. Sirva a pasta por HTTP; não abra o HTML diretamente como arquivo, porque os caminhos dos assets partem da raiz.
-
-## Contêiner instalado
-
-- O snippet do GTM fica no início do `<head>`.
-- O `noscript` fica imediatamente após a abertura do `<body>`.
-- O Consent Mode v2 é inicializado antes do GTM, com as quatro permissões como `denied` por padrão.
-- A aba Consentimento permite conceder permissões para testar a coleta.
-- A variável `window.TAGLAB_DEFAULT_GTM_ID`, no início do `public/index.html`, define o contêiner padrão.
-- Cada pessoa troca o ID na aba Configuração → Google Tag Manager → Salvar e aplicar. A escolha não afeta outros usuários.
-- O botão Restaurar contêiner padrão remove apenas a configuração local e retorna ao GTM-KW59VB3X.
-- O contêiner escolhido é carregado no head. O carregador da aplicação detecta essa instalação e não carrega uma segunda cópia.
-- A interface distingue carregamento solicitado, script carregado e falha; não presume recebimento no GA4.
-- Em um navegador novo, o site usa GTM-KW59VB3X. A aba Configuração permite escolher explicitamente outro contêiner, GA4 direto ou somente dataLayer. Esses overrides ficam apenas no navegador.
-- O noscript é fixo em GTM-KW59VB3X; ele só atua quando JavaScript está desativado.
-
-## Validar o GA4
-
-1. No contêiner GTM-KW59VB3X, configure uma Google tag com seu ID G-... e o acionador All Pages.
-2. Configure as tags de evento GA4 e os acionadores de Evento personalizado. Consulte a aba Plano de mensuração.
-3. No GTM, clique Preview e conecte a URL gerada pela Vercel.
-4. Confira o estado de consentimento e teste denied/granted.
-5. Faça produto → carrinho → checkout → entrega → pagamento → compra.
-6. Confira os pushes no monitor e as tags disparadas no Tag Assistant.
-7. Valide os eventos no DebugView do GA4 e as requisições de coleta no Network. Passe `debug_mode` como parâmetro nas tags GA4 de teste do GTM.
-8. Use uma propriedade/fluxo de testes para não poluir os dados de produção.
-
-O monitor comprova o push local; ele não confirma o recebimento no GA4. Evite duplicar page_view, cliques, formulários e vídeo entre a instrumentação manual e a medição otimizada.
+Abra http://localhost:8000. Não abra index.html como arquivo, pois os assets usam caminhos a partir da raiz.
 
 ## GTG
 
-Este pacote NÃO cria um gateway ou proxy. Ele permite informar o caminho first-party de um gateway já configurado no domínio. Publicar na Vercel e instalar GTM não ativa o GTG. O gateway exige configuração de domínio e infraestrutura compatível. A verificação de /healthy só passa se o gateway responder `ok`.
+O simulador aceita o caminho first-party de um gateway já instalado no domínio e verifica /healthy. Ele não cria gateway, proxy ou contêiner server-side. Informar /metrics sem infraestrutura não ativa o GTG.
 
 ## Estrutura
 
-- `public/index.html`: interface e bootstrap GTM/consentimento
-- `public/app.js`: dataLayer, eventos, preferências e fluxos de teste
-- `public/style.css`: estilos responsivos
-- `public/checklist.txt`: arquivo real para o evento de download
-- `vercel.json`: configuração de hospedagem estática
+- public/index.html: interface, consentimento e carregadores no head
+- public/app.js: dataLayer e interações de teste
+- public/style.css: estilos
+- public/checklist.txt: download real para teste
+- vercel.json: hospedagem estática
 
-Todos os produtos, pedidos e usuários do laboratório são fictícios. Os dados do formulário não são enviados a um backend; nome/e-mail não entram no dataLayer.
+Produtos, pedidos e usuários são fictícios. Nome e e-mail do formulário não entram no dataLayer e não são enviados a um backend.
 
 ## Referências
 
-- https://vercel.com/docs/builds/configure-a-build
-- https://vercel.com/docs/project-configuration/vercel-json
+- https://developers.google.com/analytics/devguides/collection/ga4/views
 - https://developers.google.com/analytics/devguides/collection/ga4/ecommerce
 - https://developers.google.com/tag-platform/tag-manager/gateway/setup-guide?setup=manual
+- https://vercel.com/docs/builds/configure-a-build
