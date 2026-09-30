@@ -1,0 +1,10 @@
+TagLab — checklist de mensuração
+1. Instale seu contêiner GTM na Configuração.
+2. Configure a Google tag e as tags de evento GA4 no GTM.
+3. Abra o Tag Assistant e conecte o site.
+4. Teste consentimento negado e concedido.
+5. Percorra catálogo, produto, carrinho, checkout e purchase.
+6. Confira ecommerce.items, value, currency e transaction_id.
+7. Valide o recebimento no DebugView e a coleta no Network.
+8. GTG: configure gateway no seu domínio, confira /healthy e hits first-party.
+9. Evite duplicação com medição otimizada.
