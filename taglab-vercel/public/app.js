@@ -1,7 +1,7 @@
 'use strict';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}};
-const config=window.taglabBootstrapConfig||read('taglab_config',{mode:'ga4',gtm:'GTM-KW59VB3X',ga:'G-K3P3QWNJ38',gateway:'',debug:true});
+const config=window.taglabBootstrapConfig||read('taglab_config',{mode:'gtm',gtm:'GTM-KW59VB3X',ga:'G-K3P3QWNJ38',gateway:'',debug:true});
 const consentKeys=['analytics_storage','ad_storage','ad_user_data','ad_personalization'];
 let consent=read('taglab_consent',Object.fromEntries(consentKeys.map(k=>[k,'denied'])));
 let logs=[],selected=null,cart=[],order=null,shippingConfirmed=false,paymentConfirmed=false,refunded=false;

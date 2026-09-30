@@ -1,6 +1,6 @@
 # TagLab — GTM, GTG e GA4
 
-O padrão é **GA4 direto, G-K3P3QWNJ38**, carregado no `<head>`. O laboratório envia os eventos ao ID escolhido sem depender de tags criadas no GTM.
+O padrão é **GTM-KW59VB3X**, carregado no `<head>` para testes de acionadores e tags. A alternativa GA4 direto usa **G-K3P3QWNJ38** e envia eventos sem depender de tags criadas no GTM. Apenas um modo de carregamento é executado por vez.
 
 ## Deploy deste repositório na Vercel
 
@@ -18,7 +18,7 @@ O `vercel.json` nessa pasta já configura framework, comandos e saída. Após um
 
 1. Abra a nova versão publicada.
 2. Se já usou o simulador, entre em Configuração → Restaurar configuração padrão. Preferências antigas do navegador são preservadas até você restaurar.
-3. Confirme Modo GA4 direto e ID `G-K3P3QWNJ38`.
+3. Para testar coleta sem configurar o contêiner, selecione GA4 direto, confirme ID `G-K3P3QWNJ38` e salve. Para testar acionadores, selecione Google Tag Manager e configure a Google tag dentro do contêiner.
 4. Em Consentimento, aceite analytics_storage (ou Aceitar tudo para testar todos os sinais).
 5. Navegue na loja e adicione produtos ao carrinho.
 6. No GA4 da mesma propriedade, confira Tempo real e DebugView. O modo debug está ativo por padrão.
@@ -72,3 +72,9 @@ Produtos, pedidos e usuários são fictícios. Nome e e-mail do formulário não
 - https://developers.google.com/analytics/devguides/collection/ga4/ecommerce
 - https://developers.google.com/tag-platform/tag-manager/gateway/setup-guide?setup=manual
 - https://vercel.com/docs/builds/configure-a-build
+
+## Acionador de inicialização
+
+Para testar seu contêiner, selecione Google Tag Manager na Configuração, use GTM-KW59VB3X e clique Salvar e aplicar. Abra o Preview desse contêiner no Tag Assistant. A Google tag dentro do GTM deve usar o acionador nativo Inicialização – Todas as páginas, com o ID G-K3P3QWNJ38.
+
+Não crie um acionador de Evento personalizado chamado gtm.init e não insira esse evento manualmente no site. A inicialização é gerada pelo contêiner; eventos internos do GTM podem aparecer no Preview sem corresponder a pushes visíveis no monitor local. Se o Preview não mostrar inicialização, confira o carregamento de gtm.js, o contêiner selecionado e possíveis bloqueadores.
