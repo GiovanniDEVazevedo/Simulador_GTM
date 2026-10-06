@@ -1,5 +1,6 @@
 'use strict';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const monitorToggle=$('#toggle-monitor');const monitorHidden=localStorage.getItem('taglab_monitor_hidden')==='true';document.body.classList.toggle('data-layer-hidden',monitorHidden);function renderMonitorToggle(){const hidden=document.body.classList.contains('data-layer-hidden');monitorToggle.setAttribute('aria-expanded',String(!hidden));monitorToggle.textContent=hidden?'Mostrar dataLayer':'Ocultar dataLayer';monitorToggle.setAttribute('aria-label',hidden?'Mostrar painel do dataLayer':'Ocultar painel do dataLayer')}monitorToggle.addEventListener('click',()=>{const hidden=document.body.classList.toggle('data-layer-hidden');localStorage.setItem('taglab_monitor_hidden',String(hidden));renderMonitorToggle()});renderMonitorToggle();
 const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}};
 const config=window.taglabBootstrapConfig||read('taglab_config',{mode:'gtm',gtm:'GTM-KW59VB3X',ga:'G-K3P3QWNJ38',gateway:'',debug:true});
 const consentKeys=['analytics_storage','ad_storage','ad_user_data','ad_personalization'];
