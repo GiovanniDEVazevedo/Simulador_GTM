@@ -78,3 +78,11 @@ Produtos, pedidos e usuários são fictícios. Nome e e-mail do formulário não
 Para testar seu contêiner, selecione Google Tag Manager na Configuração, use GTM-KW59VB3X e clique Salvar e aplicar. Abra o Preview desse contêiner no Tag Assistant. A Google tag dentro do GTM deve usar o acionador nativo Inicialização – Todas as páginas, com o ID G-K3P3QWNJ38.
 
 Não crie um acionador de Evento personalizado chamado gtm.init e não insira esse evento manualmente no site. A inicialização é gerada pelo contêiner; eventos internos do GTM podem aparecer no Preview sem corresponder a pushes visíveis no monitor local. Se o Preview não mostrar inicialização, confira o carregamento de gtm.js, o contêiner selecionado e possíveis bloqueadores.
+
+## Laboratório UPD & EC
+
+A aba **UPD & EC** oferece normalização e SHA-256 de identidades fictícias, prévia sem push, envio explícito ao GTM, cenários de consentimento, leads e compras, limpeza de dados entre eventos e seis exercícios com evidências locais.
+
+Leia o [roteiro completo](public/upd-guide.md) para configurar variáveis/tags no GTM, habilitar UPD no GA4 e verificar Network/DebugView. Ads é opcional e exige sua própria ação de conversão. Nenhuma configuração de conta Google é criada pelo site. Identidades fictícias não validam correspondência ou atribuição.
+
+Execute os testes locais com Node 20+: `node --test tests/*.test.cjs` (nesta pasta). Eles validam preparação, consentimento e fluxo da interface com DOM simulado; não comprovam entrega aos serviços Google.
