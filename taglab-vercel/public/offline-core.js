@@ -19,7 +19,9 @@
   function positiveMoney(input) {
     const value = Number(input);
     if (!Number.isFinite(value) || value <= 0) throw Error('Informe um valor de conversão maior que zero.');
-    return Math.round(value * 100) / 100;
+    const rounded = Math.round(value * 100) / 100;
+    if (rounded <= 0) throw Error('Informe um valor de pelo menos R$ 0,01.');
+    return rounded;
   }
 
   function transactionId(input) {
@@ -37,8 +39,11 @@
   function userIdentifiers(prepared) {
     const hashed = prepared && prepared.hashed ? prepared.hashed : {};
     const ids = [];
-    if (hashed.sha256_email_address) ids.push({emailAddress:String(hashed.sha256_email_address).toUpperCase()});
-    if (hashed.sha256_phone_number) ids.push({phoneNumber:String(hashed.sha256_phone_number).toUpperCase()});
+    for (const [source, target] of [['sha256_email_address','emailAddress'], ['sha256_phone_number','phoneNumber']]) {
+      if (!hashed[source]) continue;
+      if (typeof hashed[source] !== 'string' || !/^[a-f0-9]{64}$/i.test(hashed[source])) throw Error('Identificador ECL inválido: prepare um SHA-256 hexadecimal de 64 caracteres.');
+      ids.push({[target]:hashed[source].toUpperCase()});
+    }
     return ids;
   }
 
@@ -61,6 +66,7 @@
       return event;
     }
 
+    if (options.consent?.ad_user_data !== 'granted') throw Error('ECL bloqueado: ad_user_data está negado. Revise o consentimento e tente novamente.');
     const ids = userIdentifiers(options.prepared);
     if (!ids.length) throw Error('ECL precisa de pelo menos um identificador de usuário preparado.');
     event.userData = {userIdentifiers: ids};
@@ -95,7 +101,10 @@
       },
       validateOnly: true
     };
-    if (options.event.userData) request.encoding = 'HEX';
+    if (options.event.userData) {
+      if (request.consent.adUserData !== 'CONSENT_GRANTED') throw Error('ECL bloqueado: ad_user_data precisa estar concedido para incluir UserData.');
+      request.encoding = 'HEX';
+    }
     return request;
   }
 
@@ -108,6 +117,7 @@
     const hasUserData = !!(event.userData && Array.isArray(event.userData.userIdentifiers) && event.userData.userIdentifiers.length);
     if (!hasAdId && !hasUserData) throw Error('Nenhum identificador de atribuição foi incluído.');
     if (!event.eventTimestamp || !event.eventSource) throw Error('Campos obrigatórios do evento estão ausentes.');
+    if (hasUserData && request.consent?.adUserData !== 'CONSENT_GRANTED') throw Error('UserData bloqueado pelo consentimento atual.');
     if (hasUserData && request.encoding !== 'HEX') throw Error('Uploads com UserData precisam indicar o encoding.');
     return {valid:true, matchKeys:{gclid:hasAdId,userData:hasUserData}, transactionId:event.transactionId};
   }

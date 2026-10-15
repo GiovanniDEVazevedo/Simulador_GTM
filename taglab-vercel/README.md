@@ -111,3 +111,18 @@ Referências oficiais usadas no desenho do payload:
 - https://developers.google.com/data-manager/api/devguides/events/google-ads/online/send-events
 - https://developers.google.com/data-manager/api/devguides/events/send-events
 - https://developers.google.com/data-manager/api/get-started/quickstart/send-events
+
+### Gerar um payload ECL
+
+1. Em **OCI · ECL · Data Manager**, selecione ECL, use os dados fictícios e crie o lead.
+2. Registre uma venda com valor positivo para colocar o lead em WON.
+3. Se o aviso junto ao botão indicar `ad_user_data: denied`, clique **Revisar consentimento para ECL**. Altere esse sinal e aplique a seleção; volte à aba offline. O site não concede permissões automaticamente e preserva o lead nessa navegação.
+4. Clique **Gerar payload ECL** e depois **Montar request validateOnly**. O JSON é apenas uma prévia; não existe chamada à API nem confirmação de correspondência/atribuição.
+
+Falhas limpam as prévias dependentes. Alterar os dados de captura exige recriar o lead; alterar os IDs do destino exige montar outro request. Uma venda WON mantém seu transactionId ao gerar novamente o payload; use **Novo caso** para outra venda. OCI pode usar somente GCLID, sem preencher identidade.
+
+## Exercícios e questionário
+
+A aba **Exercícios & questionário** reúne oito desafios com resultados esperados e 12 questões sobre GTM/GTG, UPD, consentimento, OCI/ECL, diagnóstico e Data Manager. A correção explica cada resposta e sugere uma prática. É possível refazer somente os erros, acompanhar o melhor resultado completo e exportar o progresso.
+
+Respostas, notas e tarefas ficam no armazenamento local do navegador (`taglab_learning_v1`). O módulo não envia esses dados ao dataLayer ou GA4. As tarefas são autoavaliação e não verificam contas Google. Os testes cobrem regras de consentimento, estado do CRM, limpeza das prévias, cancelamento da preparação assíncrona e os fluxos de correção/revisão do questionário.
