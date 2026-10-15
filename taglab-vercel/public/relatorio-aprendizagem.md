@@ -113,7 +113,9 @@ Critério sugerido de autonomia: a pessoa explica a escolha, executa a configura
 
 Foram aprovados **28 testes automatizados locais**, cobrindo normalização/hash, consentimento, geração OCI/ECL, estado do CRM, prévias assíncronas, filtros, sorteio, correção, revisão, persistência e migração. A estrutura HTML foi verificada quanto a IDs únicos, scripts existentes e seletores estáticos do módulo.
 
-Os testes de interface usam DOM simulado. Eles não executam chamadas aos serviços Google, não validam credenciais, não provisionam gateway e não comprovam métricas de aprendizagem. A hospedagem continua estática, sem backend novo ou serviço de banco de dados.
+A versão publicada na Vercel também foi conferida no navegador: filtro por tema, busca vazia, marcações de revisão, montagem de uma seleção, bloqueio de correção incompleta, retomada após recarregar, correção com explicação, revisão dos erros e progresso acumulado.
+
+Os testes de interface automatizados usam DOM simulado. Eles não executam chamadas aos serviços Google, não validam credenciais, não provisionam gateway e não comprovam métricas de aprendizagem. A hospedagem continua estática, sem backend novo ou serviço de banco de dados.
 
 ## 8. Próximos passos priorizados
 
