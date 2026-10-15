@@ -1,6 +1,6 @@
 # Laboratório UPD & EC — roteiro de prática
 
-UPD significa dados fornecidos pelo usuário. EC significa conversões otimizadas (Enhanced Conversions). UPD pode alimentar EC no GA4; uma tag de conversão nativa do Google Ads é outra rota. Este laboratório prepara dados fictícios e eventos. As configurações das contas, publicação do contêiner e verificação das requisições são feitas por você.
+UPD significa dados fornecidos pelo usuário. EC significa conversões otimizadas (Enhanced Conversions). UPD pode alimentar EC no GA4; uma tag de conversão nativa do Google Ads é outra rota. A documentação consultada em 15/10/2026 exige vínculo da propriedade com Ads para coletar UPD no GA4; confira os requisitos vigentes. A preparação de dados no simulador continua sendo local e pode ser estudada sem conectar contas. Este laboratório prepara dados fictícios e eventos. As configurações das contas, publicação do contêiner e verificação das requisições são feitas por você.
 
 ## 1. Preparar o ambiente
 
@@ -8,7 +8,7 @@ UPD significa dados fornecidos pelo usuário. EC significa conversões otimizada
 2. Abra Configuração no simulador. Escolha GTM e informe seu contêiner de teste. Salve e recarregue. O padrão continua `GTM-KW59VB3X`; use uma propriedade GA4 de testes. GA4 direto continua disponível no site, mas o envio deste laboratório exige o modo GTM.
 3. No GTM, crie/confira a **Tag do Google** com o ID da propriedade de teste (o ID informado anteriormente foi `G-K3P3QWNJ38`). Use o acionador nativo **Initialization – All Pages**. Não crie um evento personalizado `gtm.init` nem o envie manualmente.
 4. Abra Preview e conecte o endereço publicado. Confira o contêiner correto e o evento Initialization. Se ele não aparecer, verifique o carregamento de `gtm.js`, bloqueadores, CSP e configuração salva no navegador.
-5. No GA4, habilite a coleta de dados fornecidos pelo usuário em Administração → Coleta de dados, aceite os termos quando aplicáveis e habilite a capacidade correspondente nas configurações da Tag do Google. Use coleta por código para este exercício; desative métodos automáticos concorrentes durante a comparação controlada.
+5. No GA4, confira o vínculo com Ads exigido pela documentação atual e habilite a coleta de dados fornecidos pelo usuário em Administração → Coleta de dados, aceite os termos quando aplicáveis e habilite a capacidade correspondente nas configurações da Tag do Google. Use coleta por código para este exercício; desative métodos automáticos concorrentes durante a comparação controlada.
 6. Na aba UPD & EC, comece com **Gerar prévia**. Esta opção não envia o evento do laboratório; outras tags existentes na página continuam funcionando.
 
 O laboratório aceita e-mails nos domínios reservados `example.com`, `example.org`, `example.net` e `test.invalid`; telefone opcional de `+12025550100` a `+12025550199`. Não use dados reais. Esses valores permitem testar a implementação, mas não demonstram correspondência com usuários ou atribuição a anúncios.

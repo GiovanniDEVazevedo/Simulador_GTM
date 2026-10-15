@@ -83,7 +83,7 @@ Não crie um acionador de Evento personalizado chamado gtm.init e não insira es
 
 A aba **UPD & EC** oferece normalização e SHA-256 de identidades fictícias, prévia sem push, envio explícito ao GTM, cenários de consentimento, leads e compras, limpeza de dados entre eventos e seis exercícios com evidências locais.
 
-Leia o [roteiro completo](public/upd-guide.md) para configurar variáveis/tags no GTM, habilitar UPD no GA4 e verificar Network/DebugView. Ads é opcional e exige sua própria ação de conversão. Nenhuma configuração de conta Google é criada pelo site. Identidades fictícias não validam correspondência ou atribuição.
+Leia o [roteiro completo](public/upd-guide.md) para configurar variáveis/tags no GTM, habilitar UPD no GA4 e verificar Network/DebugView. Para validar UPD e EC no GA4, cumpra os pré-requisitos atuais, incluindo vínculo da propriedade com Ads. A preparação de dados pode ser praticada localmente sem conectar contas; uma conversão nativa do Ads exige sua própria ação de conversão. Nenhuma configuração de conta Google é criada pelo site. Identidades fictícias não validam correspondência ou atribuição.
 
 Execute os testes locais com Node 20+: `node --test tests/*.test.cjs` (nesta pasta). Eles validam preparação, consentimento e fluxo da interface com DOM simulado; não comprovam entrega aos serviços Google.
 
@@ -121,8 +121,29 @@ Referências oficiais usadas no desenho do payload:
 
 Falhas limpam as prévias dependentes. Alterar os dados de captura exige recriar o lead; alterar os IDs do destino exige montar outro request. Uma venda WON mantém seu transactionId ao gerar novamente o payload; use **Novo caso** para outra venda. OCI pode usar somente GCLID, sem preencher identidade.
 
-## Exercícios e questionário
+## Banco de questões e aprendizagem
 
-A aba **Exercícios & questionário** reúne oito desafios com resultados esperados e 12 questões sobre GTM/GTG, UPD, consentimento, OCI/ECL, diagnóstico e Data Manager. A correção explica cada resposta e sugere uma prática. É possível refazer somente os erros, acompanhar o melhor resultado completo e exportar o progresso.
+A aba **Exercícios & questionário** oferece **64 questões autorais**, **8 temas**, **37 referências oficiais Google** e **16 desafios práticos**. O banco fica salvo nos arquivos públicos do site, versionado com o código, sem depender de um serviço externo para montar questões. Não é um exame oficial ou uma certificação.
 
-Respostas, notas e tarefas ficam no armazenamento local do navegador (`taglab_learning_v1`). O módulo não envia esses dados ao dataLayer ou GA4. As tarefas são autoavaliação e não verificam contas Google. Os testes cobrem regras de consentimento, estado do CRM, limpeza das prévias, cancelamento da preparação assíncrona e os fluxos de correção/revisão do questionário.
+- Temas: GTM/dataLayer, GA4/e-commerce, GTG/CDN/sGTM, consentimento/CMP, UPD/EC, OCI/ECL, Data Manager UI/API e arquitetura/diagnóstico.
+- Busque por palavras e filtre por tema, nível, ferramenta, tipo de problema ou marcação para revisar.
+- Estude o gabarito explicado, o impacto no conjunto, a fonte e a prática sugerida de cada questão.
+- Monte simulados com até 10, até 20 ou todas as questões filtradas. O sorteio distribui os temas disponíveis e não repete itens na tentativa.
+- Responda uma questão por vez, salve o rascunho automaticamente, corrija e refaça somente os erros. Também é possível praticar os erros pendentes do histórico.
+- Acompanhe as questões distintas corrigidas, as respostas acumuladas por tema e as últimas 30 tentativas. Cada nota mostra seu denominador; seleções diferentes não são notas equivalentes.
+- Baixe o banco completo ou exporte seu progresso em JSON.
+
+Respostas, marcações, tarefas e histórico ficam no armazenamento local deste navegador (`taglab_learning_v2`). O progresso antigo de 12 questões é migrado; sua melhor nota é preservada como legado, sem equipará-la ao banco de 64 itens. O módulo não envia respostas ou notas ao dataLayer/GA4; tags externas podem observar interações gerais. Limpar o navegador elimina o progresso, salvo se você tiver exportado uma cópia. Não há sincronização, login de aluno, importação de progresso ou painel do tutor.
+
+Os desafios são autoavaliação: marcar uma tarefa não verifica a conta Google, a implantação ou a entrega de uma conversão. Gabaritos e fontes são públicos para estudo; o recurso não serve como prova sigilosa de seleção.
+
+### Manter o conteúdo
+
+- `public/question-bank.js`: banco único, versão, revisão editorial, temas, questões e registro de fontes.
+- `public/learning-core.js`: filtros, sorteio equilibrado, correção e persistência saneada.
+- `public/learning-lab.js`: interface de estudo, simulados, histórico e tarefas.
+- Preserve IDs estáveis; cada questão precisa de tema, nível, tipo, ferramentas, quatro alternativas, gabarito, explicação, impacto, fonte, prática e data de revisão.
+- As fontes foram consultadas em **15/10/2026**. Revise novamente após mudanças em APIs, consentimento ou pré-requisitos de produto; a data não implica atualização automática.
+- Execute `node --test tests/*.test.cjs`: os 28 testes cobrem preparação, consentimento, CRM, prévias assíncronas, filtros, migração e fluxos de estudo. Não comprovam entrega aos serviços Google.
+
+Veja o [relatório de implementação, impacto e próximos passos](public/relatorio-aprendizagem.md).
