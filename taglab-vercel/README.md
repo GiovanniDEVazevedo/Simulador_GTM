@@ -86,3 +86,28 @@ A aba **UPD & EC** oferece normalização e SHA-256 de identidades fictícias, p
 Leia o [roteiro completo](public/upd-guide.md) para configurar variáveis/tags no GTM, habilitar UPD no GA4 e verificar Network/DebugView. Ads é opcional e exige sua própria ação de conversão. Nenhuma configuração de conta Google é criada pelo site. Identidades fictícias não validam correspondência ou atribuição.
 
 Execute os testes locais com Node 20+: `node --test tests/*.test.cjs` (nesta pasta). Eles validam preparação, consentimento e fluxo da interface com DOM simulado; não comprovam entrega aos serviços Google.
+
+
+## Laboratório Semana 3 — OCI, ECL e Data Manager
+
+A nova aba **OCI · ECL · Data Manager** simula o fluxo anúncio → lead → CRM → venda offline → preparação para upload.
+
+O laboratório foi desenhado para estudo seguro:
+- OCI usa um GCLID **sintético** iniciado por `TEST_GCLID_`.
+- ECL reutiliza a normalização e SHA-256 do módulo UPD, sempre com identidades fictícias.
+- O CRM existe somente na memória da página.
+- A prévia do Data Manager usa `validateOnly: true` e **não executa chamada de API**.
+- O `transactionId` é único por caso para reforçar deduplicação.
+- O dataLayer recebe somente eventos/metadados do laboratório; e-mail, telefone e hashes não são empurrados para o monitor global.
+
+Arquivos:
+- `public/offline-core.js`: validação e geração dos objetos Event/request.
+- `public/offline-lab.js`: fluxo visual do laboratório e CRM fictício.
+- `tests/offline-core.test.cjs`: testes do núcleo OCI/ECL/Data Manager.
+
+Para executar todos os testes locais: `node --test tests/*.test.cjs`.
+
+Referências oficiais usadas no desenho do payload:
+- https://developers.google.com/data-manager/api/devguides/events/google-ads/online/send-events
+- https://developers.google.com/data-manager/api/devguides/events/send-events
+- https://developers.google.com/data-manager/api/get-started/quickstart/send-events
