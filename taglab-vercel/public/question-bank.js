@@ -1,7 +1,7 @@
 /* Banco autoral versionado. Gabaritos públicos para estudo. */
 (function(root,factory){const data=factory();if(typeof module==='object'&&module.exports)module.exports=data;else root.TagLabQuestionBank=data;})(typeof globalThis!=='undefined'?globalThis:this,function(){return {
-  "version": 2,
-  "reviewedAt": "2026-10-15",
+  "version": 3,
+  "reviewedAt": "2026-10-16",
   "language": "pt-BR",
   "notice": "Questões autorais de estudo, baseadas em documentação oficial. Não é uma prova ou certificação do Google. Gabaritos públicos.",
   "topics": [
@@ -75,7 +75,7 @@
       "title": "Implementação da camada de dados",
       "url": "https://developers.google.com/tag-platform/tag-manager/datalayer",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "preview": {
       "title": "Preview e depuração de contêineres web",
@@ -87,7 +87,7 @@
       "title": "Publicação e versões no GTM",
       "url": "https://support.google.com/tagmanager/answer/6107163?hl=en",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "gtag_vs_gtm": {
       "title": "Google Tag Manager e gtag.js",
@@ -99,7 +99,7 @@
       "title": "E-commerce no GA4",
       "url": "https://developers.google.com/analytics/devguides/collection/ga4/ecommerce",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "ga_debug": {
       "title": "Eventos no DebugView",
@@ -135,7 +135,7 @@
       "title": "Google Tag Gateway: configuração e verificação",
       "url": "https://developers.google.com/tag-platform/tag-manager/gateway/setup-guide?setup=manual",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "gtg_combo": {
       "title": "GTG com CDN e sGTM",
@@ -159,7 +159,7 @@
       "title": "Depuração de contêineres server-side",
       "url": "https://developers.google.com/tag-platform/tag-manager/server-side/debug",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "consent_modes": {
       "title": "Consent Mode básico e avançado",
@@ -171,13 +171,13 @@
       "title": "Implementar consentimento em websites",
       "url": "https://developers.google.com/tag-platform/security/guides/consent",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "consent_gtm": {
       "title": "Suporte a consentimento no GTM",
       "url": "https://support.google.com/tagmanager/answer/10718549?hl=en",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "upd_overview": {
       "title": "Coleta de dados fornecidos pelo usuário no GA4",
@@ -189,7 +189,7 @@
       "title": "UPD por código no GTM",
       "url": "https://support.google.com/analytics/answer/14179230?hl=en",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "upd_verify": {
       "title": "Validação da implementação UPD",
@@ -237,19 +237,19 @@
       "title": "Eventos e destinos da Data Manager API",
       "url": "https://developers.google.com/data-manager/api/devguides/events",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "dm_ingest": {
       "title": "Referência events.ingest",
       "url": "https://developers.google.com/data-manager/api/reference/rest/v1/events/ingest",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "dm_format": {
       "title": "Normalização, hash e encoding na API",
       "url": "https://developers.google.com/data-manager/api/devguides/concepts/formatting",
       "publisher": "Google",
-      "reviewedAt": "2026-10-15"
+      "reviewedAt": "2026-10-16"
     },
     "dm_access": {
       "title": "Autenticação e acesso à Data Manager API",
@@ -268,6 +268,18 @@
       "url": "https://support.google.com/google-ads/answer/13321563?hl=en",
       "publisher": "Google",
       "reviewedAt": "2026-10-15"
+    },
+    "gtm_exceptions": {
+      "title": "Acionadores de disparo e exceções",
+      "url": "https://support.google.com/tagmanager/answer/7679318?hl=en",
+      "publisher": "Google",
+      "reviewedAt": "2026-10-16"
+    },
+    "ga_developer_filter": {
+      "title": "Filtrar tráfego de desenvolvedor no GA4",
+      "url": "https://support.google.com/analytics/answer/13296662?hl=en",
+      "publisher": "Google",
+      "reviewedAt": "2026-10-16"
     }
   },
   "questions": [
@@ -1967,6 +1979,868 @@
       "practiceId": "tool-fit",
       "scope": "laboratorio",
       "reviewedAt": "2026-10-15"
+    },
+    {
+      "id": "dl-overwrite-after-load",
+      "topic": "gtm",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "dataLayer",
+        "GTM"
+      ],
+      "question": "Depois de carregar o GTM, outro script executa window.dataLayer = []. Os novos pushes aparecem nesse array, mas as tags falham. O que corrigir?",
+      "options": [
+        "Criar um segundo array chamado datalayer para os eventos de compra",
+        "Preservar a instância da camada e acrescentar dados com dataLayer.push",
+        "Publicar novamente a tag sem alterar a sobrescrita do array",
+        "Enviar gtm.init manualmente depois de cada interação"
+      ],
+      "correct": 1,
+      "explanation": "Reatribuir o array pode desconectar a camada que o contêiner acompanha. Inicialize preservando a instância existente e use push depois.",
+      "impact": "Um defeito no contrato da página pode interromper várias tags ao mesmo tempo; trocar apenas o destino não o corrige.",
+      "sourceIds": [
+        "datalayer"
+      ],
+      "practiceId": "tag-contract",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "dl-event-and-value",
+      "topic": "gtm",
+      "level": "intermediario",
+      "kind": "implementacao",
+      "tools": [
+        "dataLayer",
+        "GTM"
+      ],
+      "question": "O site publica event=\"orcamento_enviado\" e só depois publica o valor do orçamento. A tag lê o valor anterior. Qual ajuste torna o contrato mais previsível?",
+      "options": [
+        "Adicionar um atraso fixo em todas as tags do contêiner",
+        "Ler sempre o último total de outro evento do carrinho",
+        "Trocar a variável por um texto fixo para evitar valores antigos",
+        "Publicar o evento e seus valores necessários na mesma mensagem, com o dado já calculado"
+      ],
+      "correct": 3,
+      "explanation": "O GTM processa mensagens em ordem e avalia as tags do evento naquele contexto. Entregue os valores junto do evento que os consome.",
+      "impact": "Aplicação e GTM passam a compartilhar um instante definido para ler o dado, reduzindo dependência de atrasos arbitrários.",
+      "sourceIds": [
+        "datalayer"
+      ],
+      "practiceId": "tag-contract",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "gtm-exception-matched",
+      "topic": "gtm",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "GTM",
+        "Tag Assistant"
+      ],
+      "question": "No Preview, o acionador de uma tag está satisfeito, mas uma exceção também corresponde ao mesmo evento. Qual hipótese investigar primeiro?",
+      "options": [
+        "A exceção está impedindo o disparo; revisar sua condição e a intenção da regra",
+        "Aumentar a prioridade de disparo para que a tag ignore a exceção",
+        "Trocar apenas o ID de destino, sem avaliar as regras de disparo",
+        "Alterar o sequenciamento das tags para tornar qualquer exceção inoperante"
+      ],
+      "correct": 0,
+      "explanation": "Exceções podem impedir uma tag mesmo quando há um acionador correspondente. Verifique os critérios no evento observado.",
+      "impact": "A investigação começa na regra de execução; diagnosticar uma falha de rede antes de haver disparo mistura etapas diferentes.",
+      "sourceIds": [
+        "gtm_exceptions",
+        "preview"
+      ],
+      "practiceId": "tag-contract",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "gtm-version-rollback",
+      "topic": "gtm",
+      "level": "avancado",
+      "kind": "cenario",
+      "tools": [
+        "GTM",
+        "Tag Assistant"
+      ],
+      "question": "Uma publicação do GTM introduziu um erro. Existe uma versão anterior conhecida e validada. Qual procedimento oferece uma recuperação controlada?",
+      "options": [
+        "Apagar o contêiner e criar outro ID para todos os alunos",
+        "Usar Preview como se ele revertesse a versão pública para todos",
+        "Revisar a diferença, publicar a versão adequada e validar o fluxo restaurado",
+        "Editar só o nome da versão, pois isso restaura as tags anteriores"
+      ],
+      "correct": 2,
+      "explanation": "O histórico permite avaliar e publicar versões. Recuperação exige escolher a configuração correta e verificar o comportamento público.",
+      "impact": "Versão publicada, evento e evidências devem ser registrados para distinguir uma recuperação real de um teste no workspace.",
+      "sourceIds": [
+        "publish",
+        "preview"
+      ],
+      "practiceId": "initialization",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "ga4-value-needs-currency",
+      "topic": "ga4",
+      "level": "basico",
+      "kind": "implementacao",
+      "tools": [
+        "GA4",
+        "Google tag"
+      ],
+      "question": "Um evento de e-commerce envia value=150, mas não informa a moeda. O que falta no contrato recomendado?",
+      "options": [
+        "Colocar o símbolo R$ dentro da string de value",
+        "Definir currency apenas no nome do item",
+        "Enviar currency no nível do evento, com o código da moeda do valor",
+        "Reutilizar o G-ID como se ele identificasse a moeda da compra"
+      ],
+      "correct": 2,
+      "explanation": "Valores monetários precisam de currency no nível do evento. O campo identifica a unidade usada na mensuração.",
+      "impact": "A coleta pode ter o evento correto e ainda produzir receita incoerente se valor e moeda não forem compatíveis.",
+      "sourceIds": [
+        "ga_ecommerce"
+      ],
+      "practiceId": "ga4-commerce",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "ga4-purchase-value-math",
+      "topic": "ga4",
+      "level": "intermediario",
+      "kind": "cenario",
+      "tools": [
+        "GA4",
+        "dataLayer"
+      ],
+      "question": "A compra tem dois itens de R$ 50 cada, frete de R$ 10 e imposto de R$ 5. Como representar value na recomendação de purchase?",
+      "options": [
+        "value=100 e currency=\"BRL\", com shipping=10 e tax=5 separados",
+        "value=115 e somar novamente shipping e tax nos mesmos campos",
+        "value=\"R$ 100,00\" sem currency, porque o símbolo já define a moeda",
+        "value=50 porque a quantidade deve ser ignorada no total"
+      ],
+      "correct": 0,
+      "explanation": "O valor dos itens é a soma de preço vezes quantidade. Frete e imposto são parâmetros separados no exemplo oficial de compra.",
+      "impact": "Um cálculo consistente evita misturar receita dos itens com componentes que já têm seus próprios campos.",
+      "sourceIds": [
+        "ga_ecommerce"
+      ],
+      "practiceId": "ga4-commerce",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "ga4-purchase-business-trigger",
+      "topic": "ga4",
+      "level": "basico",
+      "kind": "cenario",
+      "tools": [
+        "GA4",
+        "GTM"
+      ],
+      "question": "Em uma loja real, clicar em pagar pode resultar em pagamento recusado. Qual momento representa melhor o evento purchase?",
+      "options": [
+        "Todo clique no botão pagar, antes de qualquer resultado",
+        "A seleção da forma de pagamento, mesmo quando a tentativa falha",
+        "O primeiro view_item da sessão, reaproveitando o valor exibido",
+        "A confirmação de compra definida pelo negócio, com os dados finais da transação"
+      ],
+      "correct": 3,
+      "explanation": "Compra e envio de informações de pagamento são etapas distintas. O acionamento precisa refletir o resultado que se pretende medir.",
+      "impact": "A qualidade do evento depende do significado de negócio, além de o GTM conseguir disparar uma tag.",
+      "sourceIds": [
+        "ga_ecommerce"
+      ],
+      "practiceId": "ga4-commerce",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "ga4-developer-filter",
+      "topic": "ga4",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "GA4",
+        "Tag Assistant"
+      ],
+      "question": "O evento com debug aparece no DebugView, mas não nos relatórios usuais. Há um filtro ativo de tráfego de desenvolvedor. Como interpretar?",
+      "options": [
+        "O filtro prova que o dataLayer deixou de funcionar",
+        "O filtro pode excluir esses dados dos relatórios enquanto o DebugView continua útil para depuração",
+        "Ativar debug garante que qualquer filtro será ignorado nos relatórios",
+        "Desativar o filtro recuperará automaticamente os dados já excluídos"
+      ],
+      "correct": 1,
+      "explanation": "Esse filtro permite depurar sem incluir a atividade nos relatórios. Exclusões ativas são permanentes para os dados afetados; teste antes de ativar.",
+      "impact": "A validação precisa considerar as configurações da propriedade, para não tratar filtragem esperada como falha de transporte.",
+      "sourceIds": [
+        "ga_developer_filter",
+        "ga_debug"
+      ],
+      "practiceId": "navigation",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "gtg-html-fallback",
+      "topic": "gtg",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "GTG",
+        "CDN"
+      ],
+      "question": "Abrir /metrics/healthy retorna HTTP 200, mas o corpo é o HTML da aplicação. Qual diagnóstico é mais provável?",
+      "options": [
+        "Qualquer resposta 200 confirma o gateway, independentemente do conteúdo",
+        "A rota caiu no fallback do site, em vez de chegar ao health check esperado do gateway",
+        "O HTML confirma que o GA4 já atribuiu a conversão",
+        "A camada de dados precisa receber um evento healthy para corrigir a CDN"
+      ],
+      "correct": 1,
+      "explanation": "O teste documentado espera o conteúdo ok na rota do gateway. Status 200 com HTML pode ser apenas a resposta da aplicação.",
+      "impact": "É preciso conferir destino e conteúdo da resposta; sucesso HTTP isolado não identifica qual serviço atendeu a requisição.",
+      "sourceIds": [
+        "gtg_setup"
+      ],
+      "practiceId": "gateway",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "gtg-forward-headers",
+      "topic": "gtg",
+      "level": "avancado",
+      "kind": "diagnostico",
+      "tools": [
+        "GTG",
+        "CDN",
+        "Google tag"
+      ],
+      "question": "Após uma regra de CDN para GTG, o navegador recebe o script sem o Content-Type adequado e não o executa. Qual configuração investigar?",
+      "options": [
+        "A prioridade de disparo da Google tag dentro do contêiner",
+        "A troca do acionador de page_view para DOM Ready",
+        "Os nomes dos eventos que seriam recebidos pelo GA4",
+        "As regras que alteram ou removem os headers da resposta encaminhada"
+      ],
+      "correct": 3,
+      "explanation": "A configuração do gateway precisa preservar as respostas necessárias ao script. A documentação alerta para regras que removem Content-Type.",
+      "impact": "Uma transformação de infraestrutura pode impedir a execução da coleta antes que qualquer acionador de negócio seja avaliado.",
+      "sourceIds": [
+        "gtg_setup"
+      ],
+      "practiceId": "gateway",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "gtg-forward-query",
+      "topic": "gtg",
+      "level": "intermediario",
+      "kind": "implementacao",
+      "tools": [
+        "GTG",
+        "CDN"
+      ],
+      "question": "Uma regra genérica de GTG encaminha o caminho, mas descarta query strings e cookies. O que revisar?",
+      "options": [
+        "O encaminhamento previsto na configuração oficial para preservar esses elementos e o Host de origem adequado",
+        "Remover os parâmetros no navegador, supondo que o destino os reconstrói",
+        "Mudar os parâmetros para outro caminho sem ajustar o contrato com a origem",
+        "Alterar apenas a medição otimizada da propriedade GA4"
+      ],
+      "correct": 0,
+      "explanation": "O caminho é parte da configuração. A orientação genérica também trata origem, Host e preservação de cookies e query strings.",
+      "impact": "Uma rota pode responder e ainda perder informações necessárias ao fluxo; valide a requisição encaminhada, não só o health check.",
+      "sourceIds": [
+        "gtg_setup"
+      ],
+      "practiceId": "gateway",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "sgtm-client-not-claimed",
+      "topic": "gtg",
+      "level": "avancado",
+      "kind": "diagnostico",
+      "tools": [
+        "sGTM",
+        "GTM"
+      ],
+      "question": "No Preview server-side há uma requisição recebida, mas nenhum client a transforma em evento. Qual etapa verificar?",
+      "options": [
+        "Publicar novamente só as tags de saída, mantendo a entrada sem avaliação",
+        "Alterar o relatório do GA4 antes de identificar dados de evento no servidor",
+        "A compatibilidade do formato/caminho da requisição com os clients configurados",
+        "Aumentar a prioridade da tag de saída para substituir o papel do client"
+      ],
+      "correct": 2,
+      "explanation": "Receber HTTP e produzir um evento no contêiner são etapas distintas. O client precisa reconhecer e adaptar a requisição.",
+      "impact": "Sem dados de evento no servidor, as tags de saída não têm o mesmo contexto de processamento esperado.",
+      "sourceIds": [
+        "sgtm_overview",
+        "sgtm_debug"
+      ],
+      "practiceId": "tool-fit",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "consent-persist-choice",
+      "topic": "consent",
+      "level": "intermediario",
+      "kind": "implementacao",
+      "tools": [
+        "Consent Mode",
+        "CMP"
+      ],
+      "question": "A pessoa aceita o banner, navega e a escolha se perde na próxima carga. Quem deve persistir a preferência e reaplicá-la?",
+      "options": [
+        "O Consent Mode sozinho, sem armazenamento ou integração com a escolha",
+        "O GA4, usando a nota do simulado para inferir todas as permissões",
+        "A solução de consentimento/CMP e sua integração, atualizando os sinais nas páginas seguintes",
+        "O gateway, concedendo os quatro sinais sempre que responde ok"
+      ],
+      "correct": 2,
+      "explanation": "Consent Mode não armazena as escolhas por conta própria. A solução precisa persistir a decisão e atualizar o estado nas próximas páginas.",
+      "impact": "Transportar dados por GTG não resolve uma falha na continuidade da preferência do usuário.",
+      "sourceIds": [
+        "consent_impl"
+      ],
+      "practiceId": "consent-sequence",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "consent-wait-timeout",
+      "topic": "consent",
+      "level": "intermediario",
+      "kind": "conceito",
+      "tools": [
+        "Consent Mode",
+        "Google tag"
+      ],
+      "question": "Em uma integração gtag.js, wait_for_update=500 foi configurado com default denied. O fim desses 500 ms significa o quê?",
+      "options": [
+        "Terminou a espera pela atualização; isso não concede consentimento automaticamente",
+        "Os sinais tornam-se granted porque o visitante permaneceu na página",
+        "A CMP recebeu uma escolha explícita mesmo sem interação",
+        "As tags ficam bloqueadas permanentemente até reiniciar o navegador"
+      ],
+      "correct": 0,
+      "explanation": "wait_for_update controla uma janela para uma atualização assíncrona. O sinal continua dependendo do default e dos updates recebidos.",
+      "impact": "Tempo de espera e escolha do usuário são informações diferentes; confundi-las altera indevidamente a lógica da coleta.",
+      "sourceIds": [
+        "consent_impl"
+      ],
+      "practiceId": "consent-sequence",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "consent-custom-third-party",
+      "topic": "consent",
+      "level": "intermediario",
+      "kind": "cenario",
+      "tools": [
+        "GTM",
+        "Consent Mode"
+      ],
+      "question": "Uma tag HTML de terceiro não possui verificações nativas de consentimento. Definir denied para as Google tags garante que ela respeite a escolha?",
+      "options": [
+        "Sim, qualquer JavaScript da página é bloqueado pelo Consent Mode",
+        "Sim, desde que o mesmo contêiner também envie eventos ao GA4",
+        "Sim, porque a presença de um banner bloqueia todas as tags automaticamente",
+        "Não; é preciso configurar as verificações e o comportamento apropriados para essa tag"
+      ],
+      "correct": 3,
+      "explanation": "Os controles da tag devem ser analisados. As verificações adicionais do GTM ajudam a condicionar tags sem integração nativa adequada.",
+      "impact": "Um inventário de tags é necessário para aplicar a escolha de forma coerente entre fornecedores.",
+      "sourceIds": [
+        "consent_gtm"
+      ],
+      "practiceId": "consent-sequence",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "consent-additional-checks",
+      "topic": "consent",
+      "level": "avancado",
+      "kind": "diagnostico",
+      "tools": [
+        "GTM",
+        "Consent Mode",
+        "GA4"
+      ],
+      "question": "O plano é Consent Mode avançado, mas a Google tag não dispara quando analytics_storage está denied. Há uma verificação adicional exigindo granted. O que revisar?",
+      "options": [
+        "Se denied deveria ser trocado por granted em todos os visitantes",
+        "Se a exigência adicional está bloqueando a tag e contrariando o comportamento planejado para esse modo",
+        "Se o GTG precisa ignorar as escolhas da CMP",
+        "Se desativar DebugView concede armazenamento à tag"
+      ],
+      "correct": 1,
+      "explanation": "Verificações adicionais podem impedir o disparo. Google tags com verificações nativas ajustam o comportamento; confirme a modalidade pretendida.",
+      "impact": "O banner, as configurações do GTM e o modo escolhido precisam concordar; uma exigência extra pode mudar o fluxo observado.",
+      "sourceIds": [
+        "consent_gtm",
+        "consent_modes"
+      ],
+      "practiceId": "consent-sequence",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "upd-double-hash",
+      "topic": "upd",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "UPD",
+        "GTM",
+        "Enhanced Conversions"
+      ],
+      "question": "O site já forneceu um e-mail normalizado com SHA-256. Uma segunda etapa aplica SHA-256 novamente ao texto hexadecimal. O que corrigir?",
+      "options": [
+        "Manter dois hashes porque cada ferramenta exige sempre uma camada extra",
+        "Evitar o segundo hash e mapear o valor preparado no campo apropriado para dados com hash",
+        "Declarar o hash duplo no campo email, como se fosse um valor original",
+        "Corrigir apenas o nome da tag, preservando as duas etapas de hash"
+      ],
+      "correct": 1,
+      "explanation": "Aplicar hash ao hash cria outro valor. A integração deve distinguir campo original e campo já processado, respeitando o contrato do destino.",
+      "impact": "Um payload pode ter o tamanho esperado e ainda não representar o identificador normalizado que se pretendia usar.",
+      "sourceIds": [
+        "upd_code",
+        "dm_format"
+      ],
+      "practiceId": "mapping",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "upd-phone-normalization",
+      "topic": "upd",
+      "level": "basico",
+      "kind": "implementacao",
+      "tools": [
+        "UPD",
+        "Data Manager"
+      ],
+      "question": "Antes do hash de um telefone, o que significa prepará-lo em E.164 para esses fluxos?",
+      "options": [
+        "Aplicar o hash primeiro e depois remover parênteses do resultado",
+        "Preservar o formato local sem país porque o navegador sempre o infere",
+        "Acrescentar o código do país ao hash já pronto",
+        "Representar o número com +, código do país e dígitos, sem pontuação de apresentação"
+      ],
+      "correct": 3,
+      "explanation": "A normalização vem antes do SHA-256. E.164 é uma representação do telefone, não um formato do hash.",
+      "impact": "Tag e importação precisam preparar a mesma identidade de forma compatível para que o sinal tenha utilidade.",
+      "sourceIds": [
+        "upd_code",
+        "dm_format"
+      ],
+      "practiceId": "hash",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "upd-optional-missing-field",
+      "topic": "upd",
+      "level": "basico",
+      "kind": "implementacao",
+      "tools": [
+        "UPD",
+        "GTM"
+      ],
+      "question": "O caso de UPD tem e-mail válido, mas não coleta telefone. Como tratar o campo que não existe no objeto de identidade?",
+      "options": [
+        "Omitir o campo não coletado, em vez de inventar um valor ou enviar a string undefined",
+        "Preencher phone_number com a string null em todas as requisições",
+        "Enviar a string undefined como um telefone válido",
+        "Reutilizar o telefone do caso anterior para completar o objeto"
+      ],
+      "correct": 0,
+      "explanation": "A configuração por código orienta remover campos que não são coletados. Preserve apenas informações disponíveis e adequadas ao fluxo.",
+      "impact": "Dados de preenchimento artificial prejudicam o contrato da identidade e dificultam o diagnóstico entre sistemas.",
+      "sourceIds": [
+        "upd_code"
+      ],
+      "practiceId": "hash",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "upd-stale-identity-case",
+      "topic": "upd",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "UPD",
+        "dataLayer",
+        "GTM"
+      ],
+      "question": "Neste laboratório, depois de preparar uma identidade, você inicia outro caso sem os consentimentos necessários. O que verificar nos eventos seguintes?",
+      "options": [
+        "Que o hash anterior acompanha qualquer novo evento por conveniência",
+        "Que a negação muda somente a cor do aviso, mantendo o mesmo envio de identidade",
+        "Que a identidade anterior foi limpa e não foi reaproveitada no novo caso",
+        "Que o monitor offline recebeu e-mail e telefone em claro para comparar os dois casos"
+      ],
+      "correct": 2,
+      "explanation": "A limpeza entre eventos é parte das regras locais. Um novo caso sem as permissões exigidas não deve herdar a identidade do anterior.",
+      "impact": "Estado antigo em uma página longa pode contaminar eventos; a revisão precisa incluir o que deixou de ser enviado.",
+      "sourceIds": [
+        "upd_code",
+        "consent_impl"
+      ],
+      "practiceId": "revoke",
+      "scope": "laboratorio",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "offline-click-id-redirect",
+      "topic": "offline",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "OCI",
+        "CRM",
+        "Google Ads"
+      ],
+      "question": "Uma campanha traz GCLID, mas um redirecionamento o elimina antes da captura do lead. O CRM registra apenas UTMs. Qual lacuna investigar para o OCI por GCLID?",
+      "options": [
+        "Renomear utm_campaign para gclid sem mudar seu conteúdo",
+        "Usar o número da linha do CRM como se fosse o GCLID original",
+        "A preservação e captura do identificador do clique ao longo do caminho até o lead",
+        "Criar um novo TEST_GCLID_ e tratá-lo como o clique real perdido"
+      ],
+      "correct": 2,
+      "explanation": "UTMs descrevem campanha e não substituem automaticamente o identificador usado nessa associação. Verifique onde o parâmetro é perdido.",
+      "impact": "Problemas na jornada de entrada precisam ser resolvidos antes do upload; a API não recria por conta própria um clique descartado.",
+      "sourceIds": [
+        "oci",
+        "ecl"
+      ],
+      "practiceId": "oci",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "offline-business-stage",
+      "topic": "offline",
+      "level": "basico",
+      "kind": "cenario",
+      "tools": [
+        "CRM",
+        "OCI",
+        "ECL"
+      ],
+      "question": "O formulário criou um lead, mas a ação de conversão desejada é contrato fechado. Qual evento de negócio deve orientar o retorno offline?",
+      "options": [
+        "A confirmação do contrato fechado no CRM, com seu horário e dados associados",
+        "A simples abertura do formulário, mesmo sem identificação do lead",
+        "Todo carregamento da página de obrigado, independentemente do resultado posterior",
+        "A preparação de um hash, tratada como se fosse receita recebida"
+      ],
+      "correct": 0,
+      "explanation": "A etapa medida precisa corresponder à definição da conversão. Captura do lead e fechamento são resultados diferentes.",
+      "impact": "O time de negócio e a integração precisam concordar sobre a etapa devolvida à mensuração.",
+      "sourceIds": [
+        "oci",
+        "ecl"
+      ],
+      "practiceId": "oci",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "offline-timezone-offset",
+      "topic": "offline",
+      "level": "intermediario",
+      "kind": "implementacao",
+      "tools": [
+        "CRM",
+        "Data Manager"
+      ],
+      "question": "O CRM registra uma venda às 14h em UTC-03:00. Qual representação conserva esse instante em eventTimestamp?",
+      "options": [
+        "14:00:00Z, apenas trocando o sufixo sem converter o instante",
+        "O horário em que o analista abriu o gerador, ignorando a venda",
+        "Somente 14:00, sem data nem indicação de fuso",
+        "14:00:00-03:00 ou o horário equivalente 17:00:00Z, na data correspondente"
+      ],
+      "correct": 3,
+      "explanation": "O timestamp precisa representar a ocorrência e respeitar RFC 3339. Trocar o offset por Z sem converter o horário muda o instante.",
+      "impact": "A associação temporal entre clique, resultado do CRM e ingestão depende de representar a mesma ocorrência.",
+      "sourceIds": [
+        "dm_ingest",
+        "dm_format"
+      ],
+      "practiceId": "mapping",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "offline-key-reuse-two-sales",
+      "topic": "offline",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "CRM",
+        "OCI",
+        "Data Manager"
+      ],
+      "question": "O CRM usa o ID do lead como transactionId para duas vendas distintas do mesmo lead. Qual problema de modelagem revisar?",
+      "options": [
+        "Toda repetição de upload deve trocar o ID mesmo sem nova venda",
+        "A chave deve identificar cada venda distinta, mantendo estabilidade nas repetições da mesma venda",
+        "A moeda precisa ser removida para diferenciar as transações",
+        "Todas as vendas do mesmo cliente devem compartilhar um único ID global"
+      ],
+      "correct": 1,
+      "explanation": "Identidade do lead e identidade do resultado de negócio cumprem papéis diferentes. Não colapse vendas distintas no mesmo identificador de evento.",
+      "impact": "A chave mal definida pode prejudicar o controle de duplicações ou a distinção entre resultados, conforme o contrato do destino.",
+      "sourceIds": [
+        "dm_ingest",
+        "oci"
+      ],
+      "practiceId": "dedupe",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "dm-request-vs-transaction-id",
+      "topic": "data-manager",
+      "level": "intermediario",
+      "kind": "conceito",
+      "tools": [
+        "Data Manager",
+        "CRM"
+      ],
+      "question": "Uma ingestão real retorna requestId. Esse campo deve substituir transactionId nas vendas do CRM?",
+      "options": [
+        "Sim, toda venda do lote deve adotar o mesmo requestId",
+        "Não; requestId identifica a requisição, enquanto transactionId identifica o evento de negócio",
+        "Sim, a API sempre dispensa a identificação da transação depois de aceitar o request",
+        "Não é preciso guardar nenhum deles se o HTTP for 200"
+      ],
+      "correct": 1,
+      "explanation": "A API retorna um identificador do request. O ID da transação tem outra finalidade e não deve ser trocado pelo identificador do envio.",
+      "impact": "Conservar as duas referências facilita investigar o envio sem perder a identidade estável do resultado.",
+      "sourceIds": [
+        "dm_ingest"
+      ],
+      "practiceId": "dm-auth",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "dm-event-consent-override",
+      "topic": "data-manager",
+      "level": "avancado",
+      "kind": "implementacao",
+      "tools": [
+        "Data Manager",
+        "Consent Mode"
+      ],
+      "question": "Na Data Manager API, há consentimento no request e um consentimento diferente em um Event. Qual regra a referência descreve?",
+      "options": [
+        "O valor mais permissivo sempre vence, independentemente do nível",
+        "O consentimento da requisição elimina qualquer estado individual",
+        "A presença de UserData transforma automaticamente ambos em GRANTED",
+        "O consentimento do evento prevalece sobre o definido no request para aquele caso"
+      ],
+      "correct": 3,
+      "explanation": "A referência distingue consentimento do lote e do evento, com precedência do evento. Modele os estados sem ampliar uma escolha individual.",
+      "impact": "Agrupar dados para envio não autoriza aplicar a todos os usuários a permissão de uma única pessoa.",
+      "sourceIds": [
+        "dm_ingest"
+      ],
+      "practiceId": "consent-sequence",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "dm-destination-references-empty",
+      "topic": "data-manager",
+      "level": "avancado",
+      "kind": "diagnostico",
+      "tools": [
+        "Data Manager",
+        "Google Ads"
+      ],
+      "question": "Um request tem dois destinos e um Event sem destinationReferences. O que a referência da API indica?",
+      "options": [
+        "Esse evento será enviado a todos os destinos do request; revisar o mapeamento antes do envio",
+        "O evento será descartado silenciosamente por não escolher o primeiro destino",
+        "O nome do arquivo define sozinho qual destino será usado",
+        "O servidor escolherá o destino com melhor taxa de conversão"
+      ],
+      "correct": 0,
+      "explanation": "A lista vazia significa todos os destinos no request. Misturar contas ou ações requer referências explícitas e conferência do contrato.",
+      "impact": "Erros de roteamento de dados podem ocorrer mesmo quando o JSON é válido e o envio foi autorizado.",
+      "sourceIds": [
+        "dm_ingest"
+      ],
+      "practiceId": "mapping",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "dm-encoding-mismatch",
+      "topic": "data-manager",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "Data Manager",
+        "UPD"
+      ],
+      "question": "Um integrador envia os hashes hexadecimais do laboratório, mas declara encoding=BASE64. O que corrigir?",
+      "options": [
+        "Aplicar SHA-256 novamente para transformar automaticamente HEX em BASE64",
+        "Remover todos os identificadores sem conferir o contrato",
+        "Fazer o encoding declarado corresponder à representação efetiva dos identificadores preparados",
+        "Renomear emailAddress para transactionId para evitar informar encoding"
+      ],
+      "correct": 2,
+      "explanation": "Hashing e encoding são operações diferentes. O request descreve como os bytes preparados foram representados.",
+      "impact": "Interfaces podem usar estruturas distintas; compatibilidade exige verificar conteúdo, nomes e representação dos campos.",
+      "sourceIds": [
+        "dm_format",
+        "dm_ingest"
+      ],
+      "practiceId": "mapping",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "architecture-reproduction-record",
+      "topic": "architecture",
+      "level": "intermediario",
+      "kind": "diagnostico",
+      "tools": [
+        "GTM",
+        "Tag Assistant",
+        "GA4"
+      ],
+      "question": "Outro estagiário não consegue reproduzir uma falha que você viu. Qual registro torna a investigação mais útil?",
+      "options": [
+        "Somente a captura do contador local, sem configuração de teste",
+        "Somente a URL da página, sem passos nem descrição do resultado esperado",
+        "Passos, versão/ambiente, estado de consentimento, esperado/observado e evidências de cada etapa",
+        "Somente a versão mais recente do código, sem identificar a versão testada"
+      ],
+      "correct": 2,
+      "explanation": "O contexto do teste é necessário para localizar uma diferença de configuração ou de execução. Use evidências compatíveis com cada ferramenta.",
+      "impact": "Um relato reproduzível ajuda a separar defeito do site, configuração de tag e comportamento do destino.",
+      "sourceIds": [
+        "preview",
+        "ga_debug"
+      ],
+      "practiceId": "tool-fit",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "architecture-change-one-route",
+      "topic": "architecture",
+      "level": "intermediario",
+      "kind": "cenario",
+      "tools": [
+        "GTG",
+        "GTM",
+        "GA4"
+      ],
+      "question": "Ao mesmo tempo, a equipe mudou o caminho GTG e as regras das tags. A compra parou de chegar. Como reduzir a incerteza?",
+      "options": [
+        "Comparar com uma configuração conhecida e isolar cada mudança, observando disparo, rota e destino",
+        "Refazer todas as tags e trocar o ID da propriedade ao mesmo tempo",
+        "Concluir que o GTG causou a falha apenas porque foi uma das mudanças",
+        "Adicionar outro emissor de purchase antes de verificar o atual"
+      ],
+      "correct": 0,
+      "explanation": "Separe as etapas alteradas e teste a hipótese correspondente. A evidência precisa indicar se houve disparo e qual caminho foi usado.",
+      "impact": "Isolar mudanças evita atribuir a uma ferramenta um problema introduzido em outra parte do fluxo.",
+      "sourceIds": [
+        "gtg_setup",
+        "preview"
+      ],
+      "practiceId": "gateway",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "architecture-owner-of-result",
+      "topic": "architecture",
+      "level": "basico",
+      "kind": "cenario",
+      "tools": [
+        "CRM",
+        "GTM",
+        "GA4",
+        "Data Manager"
+      ],
+      "question": "O desenho contém GTM, GA4 e Data Manager, mas ninguém definiu de onde virá a confirmação da venda no CRM. O que falta?",
+      "options": [
+        "Adicionar GTG para gerar automaticamente o resultado que falta no CRM",
+        "Tratar todas as submissões de formulário como contratos fechados",
+        "Escolher a API primeiro e deixar a definição do resultado para depois",
+        "Definir a fonte do resultado, a chave de associação e a responsabilidade pela integração"
+      ],
+      "correct": 3,
+      "explanation": "A integração depende de um resultado de negócio existente e identificado. As ferramentas não substituem a definição dessa fonte.",
+      "impact": "Arquitetura útil mostra os dados e responsáveis que conectam as peças, além dos nomes dos produtos.",
+      "sourceIds": [
+        "oci",
+        "dm_events"
+      ],
+      "practiceId": "tool-fit",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
+    },
+    {
+      "id": "architecture-test-data-isolation",
+      "topic": "architecture",
+      "level": "intermediario",
+      "kind": "cenario",
+      "tools": [
+        "GA4",
+        "GTM",
+        "Tag Assistant"
+      ],
+      "question": "A turma vai gerar compras fictícias repetidamente. Qual planejamento reduz confusão com indicadores reais de negócio?",
+      "options": [
+        "Apontar todos os exercícios para qualquer propriedade de produção disponível",
+        "Usar destino de teste definido para a turma e documentar a configuração de debug e filtros",
+        "Confiar que o prefixo TEST elimina automaticamente toda coleta no GA4",
+        "Supor que abrir o Preview impede qualquer evento de chegar ao destino"
+      ],
+      "correct": 1,
+      "explanation": "Atividades de teste precisam de contexto de mensuração definido. Debug e filtros têm funções próprias e não equivalem a desligar a coleta.",
+      "impact": "A separação dos dados facilita avaliar a aprendizagem sem interpretar receitas e conversões fictícias como resultado comercial.",
+      "sourceIds": [
+        "ga_developer_filter",
+        "ga_debug",
+        "preview"
+      ],
+      "practiceId": "tool-fit",
+      "scope": "produto",
+      "reviewedAt": "2026-10-16"
     }
   ]
 };});

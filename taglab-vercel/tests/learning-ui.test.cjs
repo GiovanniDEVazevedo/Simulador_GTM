@@ -11,14 +11,14 @@ function setup(storage={}){
  return {get,storage,navigation,walk,current,answer,click,filter,state:()=>JSON.parse(storage.taglab_learning_v2)};
 }
 test('bank filters, sampling, question navigation, grading and error review work together',()=>{
- const s=setup();assert.match(s.get('#learning-bank-result').textContent,/64 de 64/);assert.equal(s.get('#learning-bank-list').children.length,8);
- s.filter('topic','offline');s.get('#learning-size').value='all';s.click('use-filters');s.click('start');assert.equal(s.state().session.ids.length,8);s.click('grade');assert.match(s.get('#learning-message').textContent,/Faltam 8/);
- for(let i=0;i<8;i++){s.answer(i!==0);if(i<7)s.click('question-next')}s.click('grade');assert.match(s.get('#learning-message').textContent,/7 de 8/);assert.equal(s.state().history.length,1);assert.equal(s.get('#learning-retry').hidden,false);
+ const s=setup();assert.match(s.get('#learning-bank-result').textContent,/96 de 96/);assert.equal(s.get('#learning-bank-list').children.length,8);
+ s.filter('topic','offline');s.get('#learning-size').value='all';s.click('use-filters');s.click('start');assert.equal(s.state().session.ids.length,12);s.click('grade');assert.match(s.get('#learning-message').textContent,/Faltam 12/);
+ for(let i=0;i<12;i++){s.answer(i!==0);if(i<11)s.click('question-next')}s.click('grade');assert.match(s.get('#learning-message').textContent,/11 de 12/);assert.equal(s.state().history.length,1);assert.equal(s.get('#learning-retry').hidden,false);
  s.click('retry');assert.equal(s.state().session.ids.length,1);s.answer();s.click('grade');assert.match(s.get('#learning-message').textContent,/1 de 1/);assert.equal(s.state().history.length,2);assert.equal(core.progress(s.state()).wrongIds.length,0);
  const restored=setup(s.storage);assert(restored.state().session.graded);assert.equal(restored.get('#learning-grade').disabled,true);
 });
 test('bookmarks can filter the library; changing filters preserves the active draft',()=>{
- const s=setup();s.get('#learning-bank-list').children[0].children.at(-1).onclick();s.get('#learning-bookmarked-only').checked=true;s.get('#learning-bookmarked-only').listeners.change();assert.match(s.get('#learning-bank-result').textContent,/1 de 64/);
+ const s=setup();s.get('#learning-bank-list').children[0].children.at(-1).onclick();s.get('#learning-bookmarked-only').checked=true;s.get('#learning-bookmarked-only').listeners.change();assert.match(s.get('#learning-bank-result').textContent,/1 de 96/);
  s.get('#learning-size').value='all';s.click('use-filters');s.click('start');s.answer();const id=s.state().session.ids[0];s.click('view-bank');s.filter('topic','ga4');assert.equal(s.state().session.ids[0],id);
  s.click('view-session');assert.equal(s.current().id,id);assert.equal(Object.keys(s.state().session.answers).length,1);const resumed=setup(s.storage);assert.equal(resumed.current().id,id);assert.equal(Object.keys(resumed.state().session.answers).length,1);
 });

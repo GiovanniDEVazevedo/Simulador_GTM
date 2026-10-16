@@ -1,5 +1,7 @@
 # TagLab: relatório de implementação, aprendizagem e evolução
 
+> Registro da entrega v2 de 15/10/2026 (64 questões). A versão atual é v3, com 96 questões e exportação Moodle. Consulte o [plano da área do tutor](plano-area-tutor.md) para a evolução de 16/10/2026.
+
 **Entrega:** banco de questões v2, revisado em 15/10/2026.  
 **Público:** novos estagiários e tutores de implementação de mensuração.  
 **Site:** https://simuladorgtm-taglab-vercel.vercel.app/#exercicios  

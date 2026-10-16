@@ -123,17 +123,17 @@ Falhas limpam as prévias dependentes. Alterar os dados de captura exige recriar
 
 ## Banco de questões e aprendizagem
 
-A aba **Exercícios & questionário** oferece **64 questões autorais**, **8 temas**, **37 referências oficiais Google** e **16 desafios práticos**. O banco fica salvo nos arquivos públicos do site, versionado com o código, sem depender de um serviço externo para montar questões. Não é um exame oficial ou uma certificação.
+A aba **Exercícios & questionário** oferece **96 questões autorais**, **8 temas**, **39 referências oficiais Google** e **16 desafios práticos**. O banco fica salvo nos arquivos públicos do site, versionado com o código, sem depender de um serviço externo para montar questões. Não é um exame oficial ou uma certificação.
 
 - Temas: GTM/dataLayer, GA4/e-commerce, GTG/CDN/sGTM, consentimento/CMP, UPD/EC, OCI/ECL, Data Manager UI/API e arquitetura/diagnóstico.
 - Busque por palavras e filtre por tema, nível, ferramenta, tipo de problema ou marcação para revisar.
 - Estude o gabarito explicado, o impacto no conjunto, a fonte e a prática sugerida de cada questão.
 - Monte simulados com até 10, até 20 ou todas as questões filtradas. O sorteio distribui os temas disponíveis e não repete itens na tentativa.
 - Responda uma questão por vez, salve o rascunho automaticamente, corrija e refaça somente os erros. Também é possível praticar os erros pendentes do histórico.
-- Acompanhe as questões distintas corrigidas, as respostas acumuladas por tema e as últimas 30 tentativas. Cada nota mostra seu denominador; seleções diferentes não são notas equivalentes.
-- Baixe o banco completo ou exporte seu progresso em JSON.
+- Acompanhe as questões distintas corrigidas, as respostas acumuladas por tema e as últimas 30 tentativas. Cada nota mostra seu denominador; seleções diferentes não são notas equivalentes. Novas tentativas também registram versão do banco e IDs do escopo; registros antigos sem esses dados continuam identificados como versão não registrada.
+- Baixe o banco completo ou exporte seu progresso em JSON. A exportação **Moodle GIFT** mantém categorias, IDs, alternativas, gabaritos, explicações, impacto e fontes; configure a importação, feedback e tentativas no LMS. A importação em uma instância real ainda precisa ser validada.
 
-Respostas, marcações, tarefas e histórico ficam no armazenamento local deste navegador (`taglab_learning_v2`). O progresso antigo de 12 questões é migrado; sua melhor nota é preservada como legado, sem equipará-la ao banco de 64 itens. O módulo não envia respostas ou notas ao dataLayer/GA4; tags externas podem observar interações gerais. Limpar o navegador elimina o progresso, salvo se você tiver exportado uma cópia. Não há sincronização, login de aluno, importação de progresso ou painel do tutor.
+Respostas, marcações, tarefas e histórico ficam no armazenamento local deste navegador (`taglab_learning_v2`). O progresso antigo de 12 questões é migrado; sua melhor nota é preservada como legado, sem equipará-la ao banco de 96 itens. O módulo não envia respostas ou notas ao dataLayer/GA4; tags externas podem observar interações gerais. Limpar o navegador elimina o progresso, salvo se você tiver exportado uma cópia. Não há sincronização, login de aluno, importação de progresso ou painel do tutor.
 
 Os desafios são autoavaliação: marcar uma tarefa não verifica a conta Google, a implantação ou a entrega de uma conversão. Gabaritos e fontes são públicos para estudo; o recurso não serve como prova sigilosa de seleção.
 
@@ -143,7 +143,13 @@ Os desafios são autoavaliação: marcar uma tarefa não verifica a conta Google
 - `public/learning-core.js`: filtros, sorteio equilibrado, correção e persistência saneada.
 - `public/learning-lab.js`: interface de estudo, simulados, histórico e tarefas.
 - Preserve IDs estáveis; cada questão precisa de tema, nível, tipo, ferramentas, quatro alternativas, gabarito, explicação, impacto, fonte, prática e data de revisão.
-- As fontes foram consultadas em **15/10/2026**. Revise novamente após mudanças em APIs, consentimento ou pré-requisitos de produto; a data não implica atualização automática.
+- As fontes foram consultadas até **16/10/2026**, com a data individual no registro da fonte. Revise novamente após mudanças em APIs, consentimento ou pré-requisitos de produto; a data não implica atualização automática.
 - Execute `node --test tests/*.test.cjs`: os 28 testes cobrem preparação, consentimento, CRM, prévias assíncronas, filtros, migração e fluxos de estudo. Não comprovam entrega aos serviços Google.
 
 Veja o [relatório de implementação, impacto e próximos passos](public/relatorio-aprendizagem.md).
+
+## Área do tutor: planejamento
+
+O [plano da área do tutor](public/plano-area-tutor.md) compara ClickUp, MoodleCloud, Supabase, Firebase e Directus, com fontes oficiais e preços/limites consultados em 16/10/2026. Propõe piloto por configuração e registro manual, define telas, papéis, rubrica e uma evolução com serviços gerenciados. Não foram criados login, contas externas, turma remota, integrações ou backend nesta entrega.
+
+Banco v3: 96 itens, 12 por tema; 33 básicos, 49 intermediários e 14 avançados. São 14 de conceito, 22 de implementação, 27 de escolha de solução e 33 de diagnóstico. Os 32 itens novos preservam IDs e gabaritos dos 64 anteriores.

@@ -160,15 +160,31 @@
     state.filters=cleanFilters(source.filters);state.bookmarks=[...new Set(Array.isArray(source.bookmarks)?source.bookmarks.filter(id=>byId.has(id)):[])];
     if(Number.isInteger(source.legacyBest)&&source.legacyBest>=0&&source.legacyBest<=100)state.legacyBest=source.legacyBest;
     for(const q of questions){const stat=source.stats?.[q.id];if(stat&&Number.isInteger(stat.attempts)&&stat.attempts>0&&Number.isInteger(stat.correct)&&stat.correct>=0&&stat.correct<=stat.attempts)state.stats[q.id]={attempts:stat.attempts,correct:stat.correct,lastCorrect:stat.lastCorrect===true};}
-    state.history=(Array.isArray(source.history)?source.history:[]).filter(h=>h&&Number.isInteger(h.score)&&Number.isInteger(h.total)&&h.total>0&&h.total<=questions.length&&h.score>=0&&h.score<=h.total).slice(0,30).map(h=>({score:h.score,total:h.total,percent:Math.round(h.score/h.total*100),at:typeof h.at==='string'?h.at:null,kind:typeof h.kind==='string'?h.kind.slice(0,40):'simulado'}));
+    state.history=(Array.isArray(source.history)?source.history:[]).filter(h=>h&&Number.isInteger(h.score)&&Number.isInteger(h.total)&&h.total>0&&h.total<=questions.length&&h.score>=0&&h.score<=h.total).slice(0,30).map(h=>({score:h.score,total:h.total,percent:Math.round(h.score/h.total*100),at:typeof h.at==='string'?h.at:null,kind:typeof h.kind==='string'?h.kind.slice(0,40):'simulado',bankVersion:Number.isInteger(h.bankVersion)&&h.bankVersion>0?h.bankVersion:null,questionIds:validIds(h.questionIds)&&h.questionIds.length===h.total?h.questionIds.slice():[]}));
     const s=source.session;if(s&&validIds(s.ids)){const answers=cleanAnswers(s.answers);state.session={ids:s.ids,answers,graded:s.graded===true&&grade(answers,s.ids).complete,index:Math.max(0,Math.min(s.ids.length-1,Number.isInteger(s.index)?s.index:0)),kind:['simulado','revisao','erros','legado'].includes(s.kind)?s.kind:'simulado',at:typeof s.at==='string'?s.at:null};}
     return state;
+  }
+  // GIFT is a text interchange format; no account, upload or external call is made.
+  function giftEscape(value){return String(value).replace(/\\/g,'\\\\').replace(/[~=#{}:]/g,'\\$&').replace(/\r?\n/g,'\\n')}
+  function exportGift(){
+    const lines=['// TagLab - banco autoral de estudo v'+bank.version,'// '+questions.length+' questões; revisão editorial '+bank.reviewedAt,'// Gabaritos públicos. Configure feedback e tentativas no Moodle antes de usar.',''];
+    for(const topic of bank.topics){
+      lines.push('$CATEGORY: TagLab/v'+bank.version+'/'+topic.id,'');
+      for(const q of questions.filter(q=>q.topic===topic.id)){
+        const refs=q.sourceIds.map(id=>bank.sources[id].title+' - '+bank.sources[id].url).join(' | ');
+        const feedback=q.explanation+' Impacto no conjunto: '+q.impact+' Fontes: '+refs+' Revisão: '+q.reviewedAt+'.';
+        lines.push('::'+giftEscape(q.id)+'::[plain]'+giftEscape(q.question)+' {');
+        for(const [i,option]of q.options.entries())lines.push((i===q.correct?'=':'~')+giftEscape(option)+'#'+giftEscape(feedback));
+        lines.push('}','');
+      }
+    }
+    return lines.join('\n');
   }
   function recordResult(state,result,at){
     if(!result.complete)throw Error('Resultado incompleto.');
     for(const r of result.results){const previous=state.stats[r.id]||{attempts:0,correct:0};state.stats[r.id]={attempts:previous.attempts+1,correct:previous.correct+(r.isCorrect?1:0),lastCorrect:r.isCorrect};}
-    state.history.unshift({score:result.score,total:result.total,percent:result.percent,at,kind:state.session?.kind||'simulado'});state.history=state.history.slice(0,30);
+    state.history.unshift({score:result.score,total:result.total,percent:result.percent,at,kind:state.session?.kind||'simulado',bankVersion:bank.version,questionIds:result.results.map(r=>r.id)});state.history=state.history.slice(0,30);
   }
   function progress(state){const topicStats=bank.topics.map(t=>{const pool=questions.filter(q=>q.topic===t.id);let attempts=0,correct=0,seen=0;for(const q of pool){const stat=state.stats[q.id];if(stat){seen++;attempts+=stat.attempts;correct+=stat.correct}}return {...t,seen,total:pool.length,attempts,correct}});return {topics:topicStats,wrongIds:allIds.filter(id=>state.stats[id]?.lastCorrect===false),seen:allIds.filter(id=>state.stats[id]).length,attempts:topicStats.reduce((n,t)=>n+t.attempts,0),correct:topicStats.reduce((n,t)=>n+t.correct,0)}}
-  return Object.freeze({bank,tasks,questions,topics:bank.topics,levels,kinds,tools,topicTitle,filterQuestions,selectQuestions,grade,hydrate,recordResult,progress});
+  return Object.freeze({bank,tasks,questions,topics:bank.topics,levels,kinds,tools,topicTitle,filterQuestions,selectQuestions,grade,hydrate,recordResult,progress,exportGift});
 });
