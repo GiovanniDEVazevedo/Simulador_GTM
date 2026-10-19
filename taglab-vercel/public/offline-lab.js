@@ -103,7 +103,7 @@
     if(history.length>10)history.pop();$('#offline-history-count').textContent=history.length+' caso(s)';msg('Caso salvo na memória desta página.');
   };
   $('#offline-export').onclick=()=>{
-    const out={generatedAt:new Date().toISOString(),cases:history,current:latestRequest?{leadId:lead?.leadId,event:latestEvent,request:latestRequest}:null,warning:'Laboratório local. Nenhuma chamada à Data Manager API foi executada.'};
+    const out={evidence:window.TagLabEvidence.create('simulation'),generatedAt:new Date().toISOString(),cases:history,current:latestRequest?{leadId:lead?.leadId,event:latestEvent,request:latestRequest}:null,warning:'Laboratório local. Nenhuma chamada à Data Manager API foi executada.'};
     const url=URL.createObjectURL(new Blob([JSON.stringify(out,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='taglab-week3-offline-cases.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
   $('#offline-reset').onclick=()=>{$('#offline-gclid').value='';resetLead();msg('Novo caso iniciado. O consentimento continua conforme sua seleção.');};

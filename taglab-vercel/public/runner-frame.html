@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' blob:; worker-src blob:; connect-src 'none'; img-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Executor isolado do laboratório</title></head><body>
+<script>
+(function(){
+  'use strict';
+  let worker=null,timer=null,url=null;
+  const stop=()=>{if(worker)worker.terminate();worker=null;clearTimeout(timer);if(url)URL.revokeObjectURL(url);url=null};
+  window.addEventListener('message',event=>{
+    if(event.source!==parent||event.data?.type!=='taglab:run'||typeof event.data.id!=='string')return;
+    const {id,code,inputs}=event.data;
+    function finish(result){stop();parent.postMessage({type:'taglab:result',id,...result},'*')}
+    if(typeof code!=='string'||code.length>6000||!Array.isArray(inputs)||inputs.length>10||JSON.stringify(inputs).length>16000){finish({error:'Entrada fora dos limites do laboratório.'});return}
+    stop();
+    const source=`(function(){
+      'use strict';
+      const send=postMessage.bind(self);
+      for(const key of ['fetch','XMLHttpRequest','WebSocket','EventSource','WebTransport','Worker','SharedWorker','importScripts','postMessage','close']){
+        Object.defineProperty(self,key,{value:undefined,writable:false,configurable:false});
+      }
+      self.onmessage=function(event){
+        try{
+          const fn=new Function('input','"use strict";\\n'+event.data.code);
+          const outputs=event.data.inputs.map(input=>fn(structuredClone(input)));
+          if(outputs.some(x=>x&&typeof x.then==='function'))throw Error('Use retorno síncrono. Requisições e tarefas assíncronas ficam fora deste exercício.');
+          const json=JSON.stringify(outputs);
+          if(json.length>32000)throw Error('Saída excede 32 mil caracteres.');
+          send({outputs:JSON.parse(json)});
+        }catch(error){send({error:String(error.message||error).slice(0,500)})}
+      };
+    })();`;
+    url=URL.createObjectURL(new Blob([source],{type:'application/javascript'}));
+    try{worker=new Worker(url);worker.onmessage=event=>finish(event.data);worker.onerror=()=>finish({error:'O código não pôde ser executado no ambiente isolado.'});timer=setTimeout(()=>finish({error:'Tempo limite de 1000 ms atingido. Execução interrompida.'}),1000);worker.postMessage({code,inputs})}catch{finish({error:'Executor indisponível neste navegador.'})}
+  });
+  window.addEventListener('pagehide',stop);
+  parent.postMessage({type:'taglab:ready'},'*');
+})();
+</script></body></html>

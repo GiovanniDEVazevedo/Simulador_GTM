@@ -10,7 +10,7 @@ function setup(override={}){
  const consent={analytics_storage:'granted',ad_user_data:'granted'};const config={mode:'gtm',gtm:'GTM-TEST'};
  const window={TagLabUPD:{...core,...override},TagLab:{getConfig:()=>({...config}),getConsent:()=>({...consent}),navigate(){}},dataLayer:[],addEventListener:(t,f)=>listeners[t]=f};
  const context={window,document:{querySelector:get,createElement:node,createTextNode:x=>x},crypto:webcrypto,localStorage:{getItem:()=>null,setItem(){}},setTimeout,console};
- vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../public/upd-lab.js'),'utf8'),context);
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../public/storage.js'),'utf8')+'\n'+fs.readFileSync(path.join(__dirname,'../public/evidence-core.js'),'utf8')+'\n'+fs.readFileSync(path.join(__dirname,'../public/upd-lab.js'),'utf8'),context);
  get('#upd-email').value='a@example.com';get('#upd-phone').value='';get('#upd-format').value='hashed';get('#upd-kind').value='lead';get('#upd-delivery').value='preview';
  return {get,window,consent,config,listeners,send:()=>get('#upd-send').onclick()};
 }

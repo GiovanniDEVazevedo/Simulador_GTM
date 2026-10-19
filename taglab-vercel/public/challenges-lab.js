@@ -3,14 +3,14 @@
   const core=window.TagLabChallenges,$=selector=>document.querySelector(selector);
   if(!core||!$('#desafios'))return;
   const storageKey='taglab_challenges_v1',drafts=new Map(),choices=new Map(),hints=new Map();
-  let saved;try{saved=JSON.parse(localStorage.getItem(storageKey))}catch{}
+  let saved;try{saved=JSON.parse(window.TagLabStorage.getItem(storageKey))}catch{}
   const state=core.hydrate(saved);let selected=core.exercise(state.selected),filter='';
   function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node}
   function progress(){return state.progress[selected.id]||(state.progress[selected.id]={attempts:0,passed:false,assisted:false})}
   function save(){
     state.selected=selected.id;
     // Never persist editor contents, headers, tokens, payloads or external evidence.
-    try{localStorage.setItem(storageKey,JSON.stringify(state))}catch{$('#challenge-storage-note').hidden=false}
+    try{if(!window.TagLabStorage.setItem(storageKey,JSON.stringify(state)))throw Error('storage')}catch{$('#challenge-storage-note').hidden=false}
   }
   function pool(){return core.exercises.filter(item=>!filter||item.type===filter)}
   function renderCatalog(){
@@ -127,7 +127,7 @@
     if(result.simulatedResponse){$('#challenge-response-note').textContent=result.simulatedResponse.note;$('#challenge-response-json').textContent='HTTP '+result.simulatedResponse.http+'\n'+JSON.stringify(result.simulatedResponse.body,null,2)}
   };
   $('#challenge-export').onclick=()=>{
-    const data={module:'taglab-data-manager-challenges',version:core.version,reviewedAt:core.reviewedAt,generatedAt:new Date().toISOString(),progress:core.hydrate(state).progress,scope:'Autoavaliação local. Não comprova conexão, ingestão, atribuição ou aprovação do tutor.'};
+    const data={evidence:window.TagLabEvidence.create('simulation'),module:'taglab-data-manager-challenges',version:core.version,reviewedAt:core.reviewedAt,generatedAt:new Date().toISOString(),progress:core.hydrate(state).progress,scope:'Autoavaliação local. Não comprova conexão, ingestão, atribuição ou aprovação do tutor.'};
     const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=el('a');a.href=url;a.download='taglab-desafios-progresso.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
   $('#challenge-clear-progress').onclick=()=>{state.progress={};save();renderCatalog();renderStatus();$('#challenge-feedback').textContent='Progresso desta área zerado. O banco de questões e os outros laboratórios mantêm seus registros.'};

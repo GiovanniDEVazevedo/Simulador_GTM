@@ -1,3 +1,5 @@
+> Documento histórico de planejamento ou relato anterior. O estado atual está em `docs/PROJETO.md` no repositório. A área Revisão com tutor já oferece preparação local de evidências; integrações protegidas continuam futuras.
+
 # TagLab: relatório de implementação, aprendizagem e evolução
 
 > Registro da entrega v2 de 15/10/2026 (64 questões). A versão atual é v3, com 96 questões e exportação Moodle. Consulte o [plano da área do tutor](plano-area-tutor.md) para a evolução de 16/10/2026.

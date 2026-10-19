@@ -10,7 +10,7 @@ function setup(storage={},blocked=false){
  }
  const get=key=>{if(!nodes.has(key))nodes.set(key,new Node());return nodes.get(key)};
  const dataLayer=[];
- vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../public/challenges-lab.js'),'utf8'),{
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../public/storage.js'),'utf8')+'\n'+fs.readFileSync(path.join(__dirname,'../public/evidence-core.js'),'utf8')+'\n'+fs.readFileSync(path.join(__dirname,'../public/challenges-lab.js'),'utf8'),{
   window:{TagLabChallenges:core,dataLayer},document:{querySelector:get,createElement:tag=>new Node(tag)},
   localStorage:{getItem:key=>storage[key]||null,setItem:(key,value)=>{if(blocked)throw Error('blocked');storage[key]=value}},console
  });

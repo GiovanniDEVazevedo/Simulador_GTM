@@ -5,7 +5,7 @@
   let busy=false, sent=false, revision=0, caseId=crypto.randomUUID(), transactionId='LAB-'+crypto.randomUUID(), latest=null;
   const receipts=[];
   const progressKey='taglab_upd_progress_v1';
-  let progress={};try{progress=JSON.parse(localStorage.getItem(progressKey))||{}}catch{}
+  let progress={};try{progress=JSON.parse(window.TagLabStorage.getItem(progressKey))||{}}catch{}
   const exercises=[
     ['normalize','Normalização antes do hash','Use o caso válido. Compare o e-mail com espaços/maiúsculas e o telefone formatado com a saída normalizada. Execute a verificação local.','O e-mail vira aluno.teste@example.com; o telefone vira +12025550123. SHA-256 tem 64 caracteres hexadecimais. Hash não é criptografia reversível.'],
     ['denied','Consentimento negado','Na aba Consentimento, recuse tudo. Gere a prévia do lead, depois envie ao GTM de teste.','lab_upd_allowed=false e lab_user_data=null. O evento de negócio ainda pode existir; a identidade não deve estar na variável UPD desse evento. Confira isso no Preview.'],
@@ -15,7 +15,7 @@
     ['cleanup','Campo ausente, erro e revogação','Depois de um teste com telefone, envie novo caso somente com e-mail. Teste e-mail inválido. Por fim negue ad_user_data e gere novo caso.','Telefone ausente é omitido, não reutilizado. Dados inválidos não geram evento. Revogação remove todo lab_user_data do próximo payload. Após cada push, o objeto da camada é limpo.']
   ];
   function message(selector,text,error=false){const el=$(selector);el.textContent=text;el.className='upd-feedback'+(error?' upd-error':'')}
-  function saveProgress(){try{localStorage.setItem(progressKey,JSON.stringify(progress))}catch{}$('#upd-progress').textContent=exercises.filter(([id])=>progress[id]).length+' / '+exercises.length}
+  function saveProgress(){try{window.TagLabStorage.setItem(progressKey,JSON.stringify(progress))}catch{}$('#upd-progress').textContent=exercises.filter(([id])=>progress[id]).length+' / '+exercises.length}
   exercises.forEach(([id,title,task,answer],index)=>{const row=document.createElement('div');row.className='upd-exercise';const label=document.createElement('label');label.className='check';const input=document.createElement('input');input.type='checkbox';input.checked=!!progress[id];input.onchange=()=>{progress[id]=input.checked;saveProgress()};label.append(input,document.createTextNode((index+1)+'. '+title));const p=document.createElement('p');p.textContent=task;const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Conferir resultado esperado';const a=document.createElement('p');a.textContent=answer;details.append(summary,a);row.append(label,p,details);$('#upd-exercises').append(row)});saveProgress();
   function status(){const c=app.getConfig(),s=app.getConsent();$('#upd-mode-status').textContent='Modo do site: '+(c.mode==='gtm'?c.gtm:c.mode==='ga4'?'GA4 direto':'Somente dataLayer');$('#upd-consent-status').textContent='analytics_storage: '+s.analytics_storage+' · ad_user_data: '+s.ad_user_data;}
   window.addEventListener('taglab:consent',()=>{revision++;latest=null;$('#upd-payload').textContent='Consentimento alterado. Gere uma nova prévia.';status()});
@@ -32,13 +32,14 @@
     if(live&&sent)return;
     if(live&&app.getConfig().mode!=='gtm'){message('#upd-send-status','Selecione Google Tag Manager na Configuração do site. O laboratório UPD usa suas tags no GTM.',true);return}
     if(live&&!$('#upd-armed').checked){message('#upd-send-status','Marque a confirmação do ambiente de teste antes de enviar.',true);return}
+    if(live&&app.getConsentStatus&&!app.getConsentStatus().ready){message('#upd-send-status','Conecte o modelo de consentimento ao GTM antes do push de teste.',true);return}
     busy=true;label();
     try{
       const prepared=await preparation();
       // Read consent after asynchronous hashing, never reuse an older consent snapshot.
       const payload=core.payload({kind:$('#upd-kind').value,prepared,format:$('#upd-format').value,consent:app.getConsent(),runId:caseId,transactionId});
       latest=payload;$('#upd-payload').textContent=JSON.stringify(payload,null,2);
-      if(live){sent=true;core.dispatch(window.dataLayer,payload);const receipt={time:new Date().toISOString(),event:payload.event,run_id:caseId,transaction_id:payload.transaction_id||null,format:payload.lab_data_format,upd_included:payload.lab_upd_allowed,result:'push_local_only'};receipts.unshift(receipt);if(receipts.length>30)receipts.pop();renderReceipts();message('#upd-send-status','Push realizado. Abra esse evento no Tag Assistant; o recebimento pelo Google ainda precisa ser verificado.');}
+      if(live){sent=true;core.dispatch(window.dataLayer,payload);const receipt={time:new Date().toISOString(),event:payload.event,run_id:caseId,transaction_id:payload.transaction_id||null,format:payload.lab_data_format,upd_included:payload.lab_upd_allowed,result:'push_local_only',evidence:window.TagLabEvidence.create('local_push',{eventName:payload.event})};receipts.unshift(receipt);if(receipts.length>30)receipts.pop();renderReceipts();message('#upd-send-status','Push realizado. Abra esse evento no Tag Assistant; o recebimento pelo Google ainda precisa ser verificado.');}
       else message('#upd-send-status',payload.lab_upd_allowed?'Prévia pronta. Nenhum push deste evento foi feito.':'Prévia pronta sem UPD: analytics_storage e ad_user_data precisam estar granted para incluir a identidade.');
     }catch(err){latest=null;$('#upd-payload').textContent='{}';message('#upd-send-status',err.message,true)}finally{busy=false;label()}
   };

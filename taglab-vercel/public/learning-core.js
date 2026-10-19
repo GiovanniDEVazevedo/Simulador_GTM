@@ -1,5 +1,5 @@
 /* Study rules only: no tags, identity or network requests. */
-(function(root,factory){const node=typeof module==='object'&&module.exports;const bank=node?require('./question-bank.js'):root.TagLabQuestionBank;const api=factory(bank);if(node)module.exports=api;else root.TagLabLearning=api;})(typeof globalThis!=='undefined'?globalThis:this,function(bank){
+(function(root,factory){const node=typeof module==='object'&&module.exports;const bank=node?require('./question-bank.js'):root.TagLabQuestionBank;const api=factory(bank,node?require('./competencies-core.js'):root.TagLabCompetencies);if(node)module.exports=api;else root.TagLabLearning=api;})(typeof globalThis!=='undefined'?globalThis:this,function(bank,competencies){
   'use strict';
   if(!bank)throw Error('Banco de questões indisponível.');
   const tasks=[
@@ -124,7 +124,7 @@
   const tools=[...new Set(questions.flatMap(q=>q.tools))].sort();
   function filterQuestions(filters={},bookmarks=[]){
     const query=normalized(filters.query).trim(),marked=new Set(bookmarks);
-    return questions.filter(q=>(!filters.topic||q.topic===filters.topic)&&(!filters.level||q.level===filters.level)&&(!filters.tool||q.tools.includes(filters.tool))&&(!filters.kind||q.kind===filters.kind)&&(!filters.bookmarkedOnly||marked.has(q.id))&&(!query||normalized([q.question,...q.options,q.explanation,q.impact,topicTitle(q.topic),...q.tools].join(' ')).includes(query)));
+    return questions.filter(q=>(!filters.topic||q.topic===filters.topic)&&(!filters.level||q.level===filters.level)&&(!filters.tool||q.tools.includes(filters.tool))&&(!filters.kind||q.kind===filters.kind)&&(!filters.competency||competencies.classify(q).includes(filters.competency))&&(!filters.bookmarkedOnly||marked.has(q.id))&&(!query||normalized([q.question,...q.options,q.explanation,q.impact,topicTitle(q.topic),...q.tools].join(' ')).includes(query)));
   }
   function shuffled(items,rng){const out=[...items];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.min(.999999,Math.max(0,rng()))*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
   function selectQuestions(filters={},count=10,bookmarks=[],rng=Math.random){
@@ -145,7 +145,7 @@
     return {complete:true,score,total:results.length,percent:Math.round(score/results.length*100),reviewIds:results.filter(r=>!r.isCorrect).map(r=>r.id),topics,results};
   }
   function cleanAnswers(input={}){const answers={};for(const q of questions)if(Number.isInteger(input?.[q.id])&&input[q.id]>=0&&input[q.id]<q.options.length)answers[q.id]=input[q.id];return answers}
-  function cleanFilters(f={}){return {query:typeof f.query==='string'?f.query.slice(0,200):'',topic:bank.topics.some(t=>t.id===f.topic)?f.topic:'',level:levels[f.level]?f.level:'',kind:kinds[f.kind]?f.kind:'',tool:tools.includes(f.tool)?f.tool:'',bookmarkedOnly:f.bookmarkedOnly===true}}
+  function cleanFilters(f={}){return {query:typeof f.query==='string'?f.query.slice(0,200):'',topic:bank.topics.some(t=>t.id===f.topic)?f.topic:'',level:levels[f.level]?f.level:'',kind:kinds[f.kind]?f.kind:'',tool:tools.includes(f.tool)?f.tool:'',bookmarkedOnly:f.bookmarkedOnly===true,competency:competencies.labels[f.competency]?f.competency:''}}
   function validIds(ids){return Array.isArray(ids)&&ids.length>0&&new Set(ids).size===ids.length&&ids.every(id=>byId.has(id))}
   function hydrate(saved,legacy){
     const state={version:2,bankVersion:bank.version,filters:cleanFilters(),tasks:{},bookmarks:[],stats:{},history:[],session:null,legacyBest:null};
@@ -186,5 +186,5 @@
     state.history.unshift({score:result.score,total:result.total,percent:result.percent,at,kind:state.session?.kind||'simulado',bankVersion:bank.version,questionIds:result.results.map(r=>r.id)});state.history=state.history.slice(0,30);
   }
   function progress(state){const topicStats=bank.topics.map(t=>{const pool=questions.filter(q=>q.topic===t.id);let attempts=0,correct=0,seen=0;for(const q of pool){const stat=state.stats[q.id];if(stat){seen++;attempts+=stat.attempts;correct+=stat.correct}}return {...t,seen,total:pool.length,attempts,correct}});return {topics:topicStats,wrongIds:allIds.filter(id=>state.stats[id]?.lastCorrect===false),seen:allIds.filter(id=>state.stats[id]).length,attempts:topicStats.reduce((n,t)=>n+t.attempts,0),correct:topicStats.reduce((n,t)=>n+t.correct,0)}}
-  return Object.freeze({bank,tasks,questions,topics:bank.topics,levels,kinds,tools,topicTitle,filterQuestions,selectQuestions,grade,hydrate,recordResult,progress,exportGift});
+  return Object.freeze({bank,competencies,tasks,questions,topics:bank.topics,levels,kinds,tools,topicTitle,filterQuestions,selectQuestions,grade,hydrate,recordResult,progress,exportGift});
 });

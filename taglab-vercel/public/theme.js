@@ -4,7 +4,7 @@
   const key='taglab_theme',root=document.documentElement;
   const system=typeof window.matchMedia==='function'?window.matchMedia('(prefers-color-scheme: dark)'):null;
   let preference=null;
-  try{const saved=localStorage.getItem(key);if(saved==='dark'||saved==='light')preference=saved}catch{}
+  try{const saved=window.TagLabStorage.getItem(key);if(saved==='dark'||saved==='light')preference=saved}catch{}
   function apply(){
     const dark=preference?preference==='dark':!!system?.matches;
     root.dataset.theme=dark?'dark':'light';
@@ -17,7 +17,7 @@
   function bind(){
     document.getElementById('toggle-theme')?.addEventListener('click',()=>{
       preference=root.dataset.theme==='dark'?'light':'dark';
-      try{localStorage.setItem(key,preference)}catch{}
+      try{window.TagLabStorage.setItem(key,preference)}catch{}
       apply();
     });
     apply();
