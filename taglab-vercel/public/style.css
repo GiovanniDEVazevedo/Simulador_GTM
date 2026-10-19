@@ -58,3 +58,67 @@ header{height:auto;min-height:76px;padding-top:14px;padding-bottom:14px;flex-wra
 [data-theme=dark] ::selection{background:#315c98;color:#fff}
 @media(max-width:1000px){header{height:auto;min-height:60px}}
 @media(max-width:550px){.theme-label{display:none}.theme-toggle{padding:9px;min-width:36px;min-height:36px}.header-right{gap:6px}header{row-gap:12px}}
+
+/* Code practice: problem statement beside an editable HTTP request. */
+#desafios .eyebrow{display:block}
+.challenge-toolbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px;padding:18px}
+.challenge-toolbar label{flex:1 1 150px;margin:0;min-width:0}
+.challenge-toolbar .challenge-picker{flex:3 1 280px}
+.challenge-toolbar select{max-width:100%}
+.challenge-navigation{display:flex;align-items:center;gap:12px;font:12px ui-monospace,monospace;padding-bottom:1px}
+.challenge-navigation button{min-width:38px;padding:10px}
+.challenge-progressbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:14px 0 22px;font-size:12px;color:#526681}
+.challenge-progressbar>span{margin-right:auto}
+.challenge-shell{padding:0;overflow:hidden}
+.challenge-heading{padding:22px 24px;margin:0;border-bottom:1px solid var(--border);align-items:flex-start;flex-wrap:wrap}
+.challenge-heading h3{font-size:1.2rem;line-height:1.4;margin-bottom:6px}
+.challenge-heading p{margin-bottom:6px}
+.challenge-heading .badge{line-height:1.5}
+.challenge-workspace{display:flex;flex-wrap:wrap}
+.challenge-description,.challenge-editorpane{flex:1 1 330px;min-width:0;padding:24px}
+.challenge-description{background:#f9fbfe;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+#desafios h4{font-size:13px;line-height:1.5;margin:0 0 12px;font-weight:700}
+.challenge-description>p{font-size:14px}
+.challenge-code{background:#111e32;color:#c3d9fa;border:1px solid #2d4263;border-radius:7px;padding:16px;min-height:0;max-height:500px;font:12px/1.75 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0 18px;tab-size:2}
+.challenge-description .muted{font-size:12px}
+.challenge-description>button{font-size:12px}
+.challenge-help{border-top:1px solid var(--border);margin-top:22px;padding-top:18px}
+.challenge-help p{font-size:13px;border-left:2px solid var(--blue);padding-left:12px;margin:16px 0 0}
+.challenge-solution{margin-top:22px;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.challenge-solution summary,.challenge-real summary{cursor:pointer;font-weight:650;font-size:14px;line-height:1.6;color:var(--blue)}
+.challenge-solution[open]>summary,.challenge-real details[open]>summary{margin-bottom:16px}
+.challenge-solution p,.challenge-real li{font-size:14px;line-height:1.7}
+.challenge-references{margin-top:22px}
+.challenge-references .question-sources{padding-left:18px}
+.challenge-references li{margin-bottom:10px}
+.challenge-http-row{display:flex;flex-wrap:wrap;gap:12px}
+.challenge-http-row>label:first-child{flex:1 1 100px}
+.challenge-http-row>label:last-child{flex:4 1 240px;min-width:0}
+.challenge-editorpane input,.challenge-editorpane textarea{font:12px/1.75 ui-monospace,monospace;tab-size:2}
+.challenge-editorpane textarea{min-height:100px}
+.challenge-editorpane .challenge-body{min-height:330px}
+.challenge-editorpane .actions{margin-top:-8px}
+.challenge-editorpane .quiz-question{margin-bottom:18px;padding:16px}
+.challenge-editorpane .quiz-question legend{font-size:14px}
+.challenge-editorpane .quiz-option{font-size:13px}
+.challenge-editorpane .quiz-option input{flex:0 0 16px;max-width:16px}
+.challenge-local-label{font:600 10px/1.6 ui-monospace,monospace;letter-spacing:.8px;color:var(--blue);padding-bottom:12px;border-bottom:1px solid var(--border)}
+.challenge-run{width:100%;margin-top:18px}
+.challenge-checks{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}
+.challenge-check{padding:12px 14px;border:1px solid var(--border);border-left:3px solid #a6b4c9;border-radius:6px;font-size:12px;line-height:1.5}
+.challenge-check.passed{border-left-color:#27834a}
+.challenge-check.failed{border-left-color:#bb6533}
+.challenge-check strong{font-size:13px}
+.challenge-check p{margin:6px 0 0;font-size:12px}
+.challenge-pass{color:#206d3c;background:#eef6f1}
+.challenge-real details{margin-top:18px}
+.challenge-real ol{padding-left:22px}
+.challenge-real li{margin-bottom:14px}
+.challenge-real code{overflow-wrap:anywhere}
+.challenge-real .actions a{font-size:13px;text-decoration:underline;text-underline-offset:3px}
+[data-theme=dark] .challenge-description{background:#0e192b}
+[data-theme=dark] .challenge-progressbar{color:#b4c2d7}
+[data-theme=dark] .challenge-check.passed{border-left-color:#70c996}
+[data-theme=dark] .challenge-check.failed{border-left-color:#e4a279}
+[data-theme=dark] .challenge-pass{background:#173d30;color:#bceace}
+@media(max-width:550px){.challenge-toolbar{padding:16px}.challenge-toolbar label,.challenge-toolbar .challenge-picker{flex-basis:100%}.challenge-navigation{margin-left:auto}.challenge-heading,.challenge-description,.challenge-editorpane{padding:18px}.challenge-code{font-size:11px;padding:12px}.challenge-heading h3{font-size:1.1rem}.challenge-description{border-right:0}.challenge-editorpane .quiz-question{padding:12px}.challenge-progressbar{gap:6px}.challenge-progressbar>span{flex-basis:100%}}

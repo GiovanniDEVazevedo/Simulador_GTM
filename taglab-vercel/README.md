@@ -157,3 +157,19 @@ Banco v3: 96 itens, 12 por tema; 33 básicos, 49 intermediários e 14 avançados
 ## Tema claro e escuro
 
 O botão **Modo escuro** no cabeçalho alterna a aparência sem recarregar a página. Na primeira visita o tema acompanha a preferência do sistema; uma escolha manual fica salva em `taglab_theme` neste navegador e é compartilhada entre abas. O tema é aplicado no início do carregamento e cobre loja, formulários, laboratórios, banco de questões e feedback. A preferência visual é independente das configurações de mensuração e do progresso de estudo.
+
+## Desafios de código — Data Manager
+
+A aba **Desafios de código** reúne nove problemas: cinco de interpretação de código e quatro de montagem/correção manual de requisições HTTP em JSON. A interface oferece enunciado, dados fictícios, alternativas ou editores, correção por critério, dicas graduais, solução comentada, fontes oficiais e exportação do progresso. Integra os temas claro/escuro e funciona sem dependências ou backend adicional.
+
+O token aceito é somente `Bearer LAB_TOKEN`. Não há envio HTTP nem execução de JavaScript escrito pelo aluno. Os códigos HTTP e respostas são simulados. O corretor cobre os casos declarados, não toda a API; aceita JSON com propriedades em outra ordem, instantes equivalentes em RFC 3339, reordenação do lote e hashes HEX/BASE64 correspondentes à identidade do exercício. Hash de formato válido com valor incorreto falha.
+
+`taglab_challenges_v1` salva apenas seleção e progresso local, incluindo uso de dicas/solução. Editores ficam em memória até recarregar; não persistem cabeçalhos, código ou evidências de contas reais. O módulo não envia respostas ao dataLayer/GA4. A coleta geral das tags conectadas continua conforme a configuração do laboratório. Progresso é autoavaliação, sem aprovação central ou proteção contra edição local.
+
+O [roteiro de estudo e conexão real](public/data-manager-desafios.md) orienta a prática autenticada fora do site, usando documentação/APIs Explorer e `validateOnly:true`. Essa etapa não é verificada automaticamente. Ingestão efetiva e diagnósticos são práticas distintas.
+
+- `public/challenges-core.js`: enunciados, fixtures, soluções e regras de correção.
+- `public/challenges-lab.js`: interface e progresso.
+- `tests/challenges-*.test.cjs`: correção semântica, erros, consentimento e fluxo da interface.
+
+Verifique com `node --test tests/*.test.cjs`. Preserve IDs e versão ao atualizar as rubricas e revise fontes/requisitos após mudanças no produto Google.
