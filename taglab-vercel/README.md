@@ -153,3 +153,7 @@ Veja o [relatório de implementação, impacto e próximos passos](public/relato
 O [plano da área do tutor](public/plano-area-tutor.md) compara ClickUp, MoodleCloud, Supabase, Firebase e Directus, com fontes oficiais e preços/limites consultados em 16/10/2026. Propõe piloto por configuração e registro manual, define telas, papéis, rubrica e uma evolução com serviços gerenciados. Não foram criados login, contas externas, turma remota, integrações ou backend nesta entrega.
 
 Banco v3: 96 itens, 12 por tema; 33 básicos, 49 intermediários e 14 avançados. São 14 de conceito, 22 de implementação, 27 de escolha de solução e 33 de diagnóstico. Os 32 itens novos preservam IDs e gabaritos dos 64 anteriores.
+
+## Tema claro e escuro
+
+O botão **Modo escuro** no cabeçalho alterna a aparência sem recarregar a página. Na primeira visita o tema acompanha a preferência do sistema; uma escolha manual fica salva em `taglab_theme` neste navegador e é compartilhada entre abas. O tema é aplicado no início do carregamento e cobre loja, formulários, laboratórios, banco de questões e feedback. A preferência visual é independente das configurações de mensuração e do progresso de estudo.
