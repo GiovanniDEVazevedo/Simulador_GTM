@@ -8,7 +8,7 @@ function setup(override={}){
  const consent={ad_user_data:'denied',ad_personalization:'denied'};
  const window={TagLabOffline:offline,TagLabUPD:{...upd,...override},TagLab:{getConsent:()=>({...consent}),navigate:tab=>navigation.push(tab)},dataLayer:[],addEventListener:(type,fn)=>listeners[type]=fn};
  get('#offline-mode').value='ecl';get('#offline-email').value='cliente.offline@example.com';get('#offline-phone').value='+1 (202) 555-0142';get('#offline-value').value='750';get('#offline-customer-id').value='1234567890';get('#offline-conversion-id').value='987654321';
- vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../public/offline-lab.js'),'utf8'),{window,document:{querySelector:get},crypto:webcrypto,console,structuredClone});
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../public/storage.js'),'utf8')+'\n'+fs.readFileSync(path.join(__dirname,'../public/evidence-core.js'),'utf8')+'\n'+fs.readFileSync(path.join(__dirname,'../public/offline-lab.js'),'utf8'),{window,document:{querySelector:get},crypto:webcrypto,console,structuredClone});
  return {get,window,consent,listeners,navigation,click:id=>get('#offline-'+id).onclick(),crm:()=>JSON.parse(get('#offline-crm').textContent),event:()=>JSON.parse(get('#offline-event-payload').textContent),request:()=>JSON.parse(get('#offline-request-payload').textContent)};
 }
 test('reported ECL flow: denied explains next to generator, consent grant resumes same lead',async()=>{

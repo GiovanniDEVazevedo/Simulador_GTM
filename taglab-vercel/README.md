@@ -2,6 +2,20 @@
 
 O padrão é **GTM-KW59VB3X**, carregado no `<head>` para testes de acionadores e tags. A alternativa GA4 direto usa **G-K3P3QWNJ38** e envia eventos sem depender de tags criadas no GTM. Apenas um modo de carregamento é executado por vez.
 
+## Evolução de aprendizagem prática e cenários reais
+
+A implementação de 19/10/2026 acrescenta **5 missões**, revisão por **7 competências**, **7 casos de escolha de ferramenta**, verificação de contratos de eventos, **4 casos de defeito**, mapeamento CSV, **3 desafios de funções JavaScript**, **8 cenários de API**, **3 incidentes de gateway** e preparação de revisão com tutor.
+
+- **Missões:** estudo, requisitos orientativos, evidência e explicação; conclusão como autoavaliação.
+- **Prática:** contrato de purchase/add_to_cart, falhas isoladas, CSV sintético e funções em executor isolado.
+- **Cenários reais:** decisões de ferramentas, operação simulada com relógio virtual e roteiros de validação externa.
+- **Revisão com tutor:** rubrica e JSON para o fluxo da equipe; sem login, turma ou aprovação protegida.
+- **Base:** armazenamento resiliente, níveis de evidência e consentimento separado por modo. O cabeçalho mostra e oculta páginas e dataLayer.
+
+**No modo GTM, instale o modelo de consentimento descrito em [consentimento-gtm.md](public/consentimento-gtm.md).** O envio armado de UPD requer essa ligação. O site fornece o código, mas não altera seu contêiner automaticamente.
+
+Documentação atual: [manual do projeto](docs/PROJETO.md) e [implementação e testes por item do plano](docs/IMPLEMENTACAO_E_TESTES.md). Os relatórios anteriores ficam identificados como históricos.
+
 ## Deploy deste repositório na Vercel
 
 O código está em uma subpasta. Ao importar `GiovanniDEVazevedo/Simulador_GTM`, use:
@@ -28,15 +42,15 @@ O monitor comprova o push local, não o recebimento pelo GA4. O aviso do fluxo n
 
 ## Configuração por pessoa
 
-Cada usuário pode escolher GA4 direto, GTM ou somente dataLayer na aba Configuração. Os IDs, o modo debug e o caminho do gateway ficam apenas no localStorage daquele navegador. Salvar recarrega a página; apenas o carregador do modo escolhido é executado.
+Cada usuário pode escolher GA4 direto, GTM ou somente dataLayer na aba Configuração. Os IDs, o modo debug e o caminho do gateway ficam no armazenamento daquele navegador quando disponível. Sem acesso, o estudo continua em memória e a interface avisa. Trocar o carregador requer gravação bem-sucedida para não destruir a sessão por reload. Salvar com persistência recarrega a página; apenas o carregador do modo escolhido é executado.
 
 Os IDs padrão ficam em `window.TAGLAB_DEFAULT_GA4_ID` e `window.TAGLAB_DEFAULT_GTM_ID`, no início de `public/index.html`. O contêiner padrão disponível para o modo GTM é `GTM-KW59VB3X`.
 
-No modo GTM, configure uma Google tag e tags de evento GA4 no contêiner, seguindo o Plano de mensuração do simulador. Nesse modo, os pushes no dataLayer dependem dessas tags para chegar ao GA4; o carregador GA4 direto fica desativado.
+No modo GTM, instale o modelo de consentimento e configure uma Google tag e tags de evento GA4 no contêiner, seguindo o Plano de mensuração do simulador. Nesse modo, os pushes no dataLayer dependem dessas tags para chegar ao GA4; o carregador GA4 direto fica desativado.
 
 ## Consentimento e duplicação
 
-O Consent Mode v2 inicializa antes das tags. As quatro permissões são denied por padrão. A seleção pode ser alterada na aba Consentimento. Não substitui uma CMP de produção.
+O bootstrap negado precede as tags. No GTM, o modelo usa setDefaultConsentState em Inicialização de consentimento e updateConsentState pelo callback da página. No GA4 direto, os comandos usam gtag; no modo local não há chamada de tag. A seleção fica na aba Consentimento. Sem modelo conectado, as escolhas locais não comprovam aplicação no GTM. O controle didático não substitui uma CMP de produção.
 
 O GA4 direto usa `send_page_view: false` e envia page_view manualmente na navegação. Desative também "Page changes based on browser history events" na Medição otimizada do fluxo para evitar page_views extras. Escolha uma estratégia para cliques, formulários, downloads e vídeos, pois a Medição otimizada pode gerar eventos além dos eventos manuais do laboratório.
 
@@ -85,7 +99,7 @@ A aba **UPD & EC** oferece normalização e SHA-256 de identidades fictícias, p
 
 Leia o [roteiro completo](public/upd-guide.md) para configurar variáveis/tags no GTM, habilitar UPD no GA4 e verificar Network/DebugView. Para validar UPD e EC no GA4, cumpra os pré-requisitos atuais, incluindo vínculo da propriedade com Ads. A preparação de dados pode ser praticada localmente sem conectar contas; uma conversão nativa do Ads exige sua própria ação de conversão. Nenhuma configuração de conta Google é criada pelo site. Identidades fictícias não validam correspondência ou atribuição.
 
-Execute os testes locais com Node 20+: `node --test tests/*.test.cjs` (nesta pasta). Eles validam preparação, consentimento e fluxo da interface com DOM simulado; não comprovam entrega aos serviços Google.
+Execute os testes locais com Node 22 ou 24: `node --test tests/*.test.cjs` (nesta pasta). Eles validam preparação, consentimento e fluxo da interface com DOM simulado; não comprovam entrega aos serviços Google.
 
 
 ## Laboratório Semana 3 — OCI, ECL e Data Manager
@@ -133,7 +147,7 @@ A aba **Exercícios & questionário** oferece **96 questões autorais**, **8 tem
 - Acompanhe as questões distintas corrigidas, as respostas acumuladas por tema e as últimas 30 tentativas. Cada nota mostra seu denominador; seleções diferentes não são notas equivalentes. Novas tentativas também registram versão do banco e IDs do escopo; registros antigos sem esses dados continuam identificados como versão não registrada.
 - Baixe o banco completo ou exporte seu progresso em JSON. A exportação **Moodle GIFT** mantém categorias, IDs, alternativas, gabaritos, explicações, impacto e fontes; configure a importação, feedback e tentativas no LMS. A importação em uma instância real ainda precisa ser validada.
 
-Respostas, marcações, tarefas e histórico ficam no armazenamento local deste navegador (`taglab_learning_v2`). O progresso antigo de 12 questões é migrado; sua melhor nota é preservada como legado, sem equipará-la ao banco de 96 itens. O módulo não envia respostas ou notas ao dataLayer/GA4; tags externas podem observar interações gerais. Limpar o navegador elimina o progresso, salvo se você tiver exportado uma cópia. Não há sincronização, login de aluno, importação de progresso ou painel do tutor.
+Respostas, marcações, tarefas e histórico ficam no armazenamento local deste navegador (`taglab_learning_v2`). O progresso antigo de 12 questões é migrado; sua melhor nota é preservada como legado, sem equipará-la ao banco de 96 itens. O módulo não envia respostas ou notas ao dataLayer/GA4; tags externas podem observar interações gerais. Limpar o navegador elimina o progresso, salvo se você tiver exportado uma cópia. Não há sincronização, login de aluno, importação de progresso ou painel protegido do tutor. A área Revisão com tutor prepara uma exportação para avaliação no fluxo da equipe.
 
 Os desafios são autoavaliação: marcar uma tarefa não verifica a conta Google, a implantação ou a entrega de uma conversão. Gabaritos e fontes são públicos para estudo; o recurso não serve como prova sigilosa de seleção.
 
@@ -144,13 +158,13 @@ Os desafios são autoavaliação: marcar uma tarefa não verifica a conta Google
 - `public/learning-lab.js`: interface de estudo, simulados, histórico e tarefas.
 - Preserve IDs estáveis; cada questão precisa de tema, nível, tipo, ferramentas, quatro alternativas, gabarito, explicação, impacto, fonte, prática e data de revisão.
 - As fontes foram consultadas até **16/10/2026**, com a data individual no registro da fonte. Revise novamente após mudanças em APIs, consentimento ou pré-requisitos de produto; a data não implica atualização automática.
-- Execute `node --test tests/*.test.cjs`: os 28 testes cobrem preparação, consentimento, CRM, prévias assíncronas, filtros, migração e fluxos de estudo. Não comprovam entrega aos serviços Google.
+- Execute `node --test tests/*.test.cjs`: os 59 testes locais cobrem preparação, consentimento, CRM, prévias assíncronas, filtros, migração e novos módulos. Há ainda nove fluxos de navegador em `npm run test:browser`. Não comprovam entrega aos serviços Google.
 
 Veja o [relatório de implementação, impacto e próximos passos](public/relatorio-aprendizagem.md).
 
-## Área do tutor: planejamento
+## Área do tutor e piloto
 
-O [plano da área do tutor](public/plano-area-tutor.md) compara ClickUp, MoodleCloud, Supabase, Firebase e Directus, com fontes oficiais e preços/limites consultados em 16/10/2026. Propõe piloto por configuração e registro manual, define telas, papéis, rubrica e uma evolução com serviços gerenciados. Não foram criados login, contas externas, turma remota, integrações ou backend nesta entrega.
+O [plano da área do tutor](public/plano-area-tutor.md) compara ClickUp, MoodleCloud, Supabase, Firebase e Directus, com fontes oficiais e preços/limites consultados em 16/10/2026. Propõe piloto por configuração e registro manual, define telas, papéis, rubrica e uma evolução com serviços gerenciados. A área Revisão com tutor implementa a preparação local desse piloto com rubrica e exportação. Login, contas externas, turmas remotas e backend não foram criados.
 
 Banco v3: 96 itens, 12 por tema; 33 básicos, 49 intermediários e 14 avançados. São 14 de conceito, 22 de implementação, 27 de escolha de solução e 33 de diagnóstico. Os 32 itens novos preservam IDs e gabaritos dos 64 anteriores.
 
@@ -162,7 +176,7 @@ O botão **Modo escuro** no cabeçalho alterna a aparência sem recarregar a pá
 
 A aba **Desafios de código** reúne nove problemas: cinco de interpretação de código e quatro de montagem/correção manual de requisições HTTP em JSON. A interface oferece enunciado, dados fictícios, alternativas ou editores, correção por critério, dicas graduais, solução comentada, fontes oficiais e exportação do progresso. Integra os temas claro/escuro e funciona sem dependências ou backend adicional.
 
-O token aceito é somente `Bearer LAB_TOKEN`. Não há envio HTTP nem execução de JavaScript escrito pelo aluno. Os códigos HTTP e respostas são simulados. O corretor cobre os casos declarados, não toda a API; aceita JSON com propriedades em outra ordem, instantes equivalentes em RFC 3339, reordenação do lote e hashes HEX/BASE64 correspondentes à identidade do exercício. Hash de formato válido com valor incorreto falha.
+Nessa aba, o token aceito é somente `Bearer LAB_TOKEN`. Não há envio HTTP nem execução de JavaScript escrito pelo aluno. O executor de funções é outro recurso, na aba Prática, com Worker isolado, CSP e limites próprios. Os códigos HTTP e respostas são simulados. O corretor cobre os casos declarados, não toda a API; aceita JSON com propriedades em outra ordem, instantes equivalentes em RFC 3339, reordenação do lote e hashes HEX/BASE64 correspondentes à identidade do exercício. Hash de formato válido com valor incorreto falha.
 
 `taglab_challenges_v1` salva apenas seleção e progresso local, incluindo uso de dicas/solução. Editores ficam em memória até recarregar; não persistem cabeçalhos, código ou evidências de contas reais. O módulo não envia respostas ao dataLayer/GA4. A coleta geral das tags conectadas continua conforme a configuração do laboratório. Progresso é autoavaliação, sem aprovação central ou proteção contra edição local.
 
@@ -173,3 +187,19 @@ O [roteiro de estudo e conexão real](public/data-manager-desafios.md) orienta a
 - `tests/challenges-*.test.cjs`: correção semântica, erros, consentimento e fluxo da interface.
 
 Verifique com `node --test tests/*.test.cjs`. Preserve IDs e versão ao atualizar as rubricas e revise fontes/requisitos após mudanças no produto Google.
+
+
+## Verificação automatizada e fluxo de alteração
+
+Com Node 22 ou 24 na pasta `taglab-vercel`:
+
+```bash
+npm ci --ignore-scripts
+npm test
+npx playwright install chromium
+npm run test:browser
+```
+
+São **59 testes locais e 9 fluxos de navegador**. O conjunto de navegador intercepta os recursos Google e não exige conta. `.github/workflows/taglab-ci.yml` configura Node 24 e executa os dois conjuntos em PR e push para main. As dependências npm são apenas de desenvolvimento; a Vercel continua entregando `public` sem instalação ou build.
+
+Antes de publicar, conferir PR, CI e Preview. Depois, conferir commit e deployment e repetir o smoke. Contas Google, importação do modelo GTM, autenticação Data Manager, gateway/CDN e piloto com tutor têm critérios manuais separados. As simulações não os aprovam automaticamente.

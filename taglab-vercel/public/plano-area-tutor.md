@@ -1,3 +1,5 @@
+> Documento histórico de planejamento ou relato anterior. O estado atual está em `docs/PROJETO.md` no repositório. A área Revisão com tutor já oferece preparação local de evidências; integrações protegidas continuam futuras.
+
 # Área do tutor: plano e comparação de serviços prontos
 
 **Revisão:** 16/10/2026. **Estado:** planejamento, sem contas, contratação ou integrações externas criadas.  

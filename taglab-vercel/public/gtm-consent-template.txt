@@ -1,0 +1,24 @@
+// Cole no editor Código de um Modelo de tag personalizado do GTM.
+// Acionador: Inicialização de consentimento - Todas as páginas.
+// Permissões: escrever nos quatro tipos de consentimento; executar
+// taglabRegisterConsent em Acessa variáveis globais. Não usar HTML personalizado.
+const setDefaultConsentState = require('setDefaultConsentState');
+const updateConsentState = require('updateConsentState');
+const callInWindow = require('callInWindow');
+
+setDefaultConsentState({
+  analytics_storage: 'denied',
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  wait_for_update: 500
+});
+callInWindow('taglabRegisterConsent', function(choice) {
+  updateConsentState({
+    analytics_storage: choice.analytics_storage === 'granted' ? 'granted' : 'denied',
+    ad_storage: choice.ad_storage === 'granted' ? 'granted' : 'denied',
+    ad_user_data: choice.ad_user_data === 'granted' ? 'granted' : 'denied',
+    ad_personalization: choice.ad_personalization === 'granted' ? 'granted' : 'denied'
+  });
+});
+data.gtmOnSuccess();
