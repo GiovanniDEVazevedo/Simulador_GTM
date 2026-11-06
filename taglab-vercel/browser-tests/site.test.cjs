@@ -8,10 +8,17 @@ before(async()=>{
  console.log('Browser validation:',browser.version());
 });
 after(async()=>{if(browser)await browser.close();if(server)await new Promise(resolve=>server.close(resolve))});
-async function open({mode='layer',blocked='',viewport={width:1440,height:1000},corrupt=false}={}){
+async function open({mode='layer',blocked='',viewport={width:1440,height:1000},corrupt=false,remote=''}={}){
  const context=await browser.newContext({viewport}),page=await context.newPage(),errors=[],external=[];
  page.on('pageerror',e=>errors.push(e.message));
- await context.route('**/*',route=>{const url=route.request().url();if(url.startsWith(origin))return route.continue();external.push(url);return route.fulfill({status:200,contentType:'application/javascript',body:''})});
+ await context.route('**/*',route=>{const url=route.request().url();
+  if(remote&&url===origin+'/content-config.js')return route.fulfill({status:200,contentType:'application/javascript',body:'window.TagLabContentConfig={apiBaseUrl:"https://control.example"};'});
+  if(remote&&url==='https://control.example/api/v1/catalog'){
+   if(remote==='failure')return route.fulfill({status:503,body:'unavailable'});
+   const bank=structuredClone(require('../public/question-bank.js'));bank.schemaVersion=1;bank.version=99;bank.questions.push({...bank.questions[0],id:'central-new-question',question:'Esta questão foi publicada pelo time na nova central?'});bank.activities=require('../public/learning-core.js').tasks.map(t=>({...t,questionIds:[]}));bank.trails=[{id:'central-new-trail',title:'Trilha do time na central',description:'Uma trilha nova publicada para praticar.',objective:'Estudar a pergunta publicada pelo time.',steps:['Resolver a questão da trilha.'],questionIds:['central-new-question'],activityIds:[bank.activities[0].id],prerequisites:[],estimatedMinutes:20}];bank.suggestions=[];
+   return route.fulfill({status:200,contentType:'application/json',headers:{'Access-Control-Allow-Origin':origin},body:JSON.stringify(bank)});
+  }
+  if(url.startsWith(origin))return route.continue();external.push(url);return route.fulfill({status:200,contentType:'application/javascript',body:''})});
  await context.addInitScript(({mode,blocked,corrupt})=>{
   localStorage.setItem('taglab_config',corrupt?'{':JSON.stringify({mode,gtm:'GTM-KW59VB3X',ga:'G-K3P3QWNJ38',gateway:'',debug:true}));
   if(blocked==='get')Object.defineProperty(window,'localStorage',{get(){throw new DOMException('blocked','SecurityError')}});
@@ -90,3 +97,6 @@ test('mobile dark layout and menu controls are usable without horizontal overflo
   assert.deepEqual(s.errors,[]);
  }finally{await s.context.close()}
 });
+
+test('central catalog supplies questions, activities and trails while preserving local study progress',async()=>{const s=await open({remote:'good'});try{await navigate(s.page,'exercicios');assert.match(await text(s.page,'#central-content-status'),/versão 99/);assert.equal(await s.page.evaluate(()=>TagLabLearning.questions.length),97);assert(await s.page.getByText('Trilha do time na central',{exact:false}).isVisible());await s.page.getByText('Trilha do time na central',{exact:false}).click();await s.page.getByRole('button',{name:'Estudar questões desta trilha',exact:true}).click();assert.match(await text(s.page,'#learning-questions'),/nova central/);assert.deepEqual(s.errors,[]);}finally{await s.context.close()}});
+test('central failure keeps the bundled bank and all laboratories usable',async()=>{const s=await open({remote:'failure'});try{await navigate(s.page,'exercicios');assert.match(await text(s.page,'#central-content-status'),/preservado/);assert.equal(await s.page.evaluate(()=>TagLabLearning.questions.length),96);await navigate(s.page,'pratica');assert(await s.page.locator('#pratica').isVisible());assert.deepEqual(s.errors,[]);}finally{await s.context.close()}});

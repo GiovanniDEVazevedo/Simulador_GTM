@@ -1,0 +1,30 @@
+name: TagLab Control tests
+on:
+  pull_request:
+    paths: ['taglab-control/**', '.github/workflows/control-ci.yml']
+  push:
+    branches: [main]
+    paths: ['taglab-control/**', '.github/workflows/control-ci.yml']
+permissions:
+  contents: read
+jobs:
+  control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: taglab-control
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: taglab-control/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser

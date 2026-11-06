@@ -203,3 +203,8 @@ npm run test:browser
 São **59 testes locais e 9 fluxos de navegador**. O conjunto de navegador intercepta os recursos Google e não exige conta. `.github/workflows/taglab-ci.yml` configura Node 24 e executa os dois conjuntos em PR e push para main. As dependências npm são apenas de desenvolvimento; a Vercel continua entregando `public` sem instalação ou build.
 
 Antes de publicar, conferir PR, CI e Preview. Depois, conferir commit e deployment e repetir o smoke. Contas Google, importação do modelo GTM, autenticação Data Manager, gateway/CDN e piloto com tutor têm critérios manuais separados. As simulações não os aprovam automaticamente.
+
+
+## Central editorial independente
+
+A aplicação [TagLab Control](../taglab-control/README.md) mantém questões, atividades e trilhas em banco separado e expõe `/api/v1/catalog`. Para conectar o laboratório, configure apenas o domínio em `public/content-config.js`; sem configuração ou em falha da API, o banco local continua funcionando. As rotas administrativas exigem login individual e permissão. O catálogo publicado inclui gabaritos públicos e serve para estudo. Veja no README da central o estado da implantação e as autorizações pendentes.
