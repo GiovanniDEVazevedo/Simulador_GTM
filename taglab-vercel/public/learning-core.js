@@ -2,7 +2,7 @@
 (function(root,factory){const node=typeof module==='object'&&module.exports;const bank=node?require('./question-bank.js'):root.TagLabQuestionBank;const api=factory(bank,node?require('./competencies-core.js'):root.TagLabCompetencies);if(node)module.exports=api;else root.TagLabLearning=api;})(typeof globalThis!=='undefined'?globalThis:this,function(bank,competencies){
   'use strict';
   if(!bank)throw Error('Banco de questões indisponível.');
-  const tasks=[
+  const bundledTasks=[
   {
     "id": "oci",
     "title": "Do clique à venda offline",
@@ -116,6 +116,7 @@
     "expected": "A identidade conceitual pode ser a mesma, mas nomes, normalização e formato seguem o contrato de cada destino."
   }
 ];
+  const tasks=Array.isArray(bank.activities)?bank.activities.map(a=>({...a,id:a.legacyId||a.id})):bundledTasks;
   const questions=bank.questions,allIds=questions.map(q=>q.id),byId=new Map(questions.map(q=>[q.id,q]));
   const levels={basico:'Básico',intermediario:'Intermediário',avancado:'Avançado'};
   const kinds={conceito:'Conceito',implementacao:'Implementação',cenario:'Escolha de solução',diagnostico:'Diagnóstico'};
