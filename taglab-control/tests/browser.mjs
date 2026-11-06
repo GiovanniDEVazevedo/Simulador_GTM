@@ -173,6 +173,13 @@ test("editor creates a question and reviewer publishes; edits keep the previous 
         (q) => q.id === "browser-questao",
       ),
     );
+    assert.deepEqual(s.errors, []);
+    if ((await s.page.getByLabel("Enunciado", { exact: true }).count()) !== 1) {
+      console.log(
+        "Editor after publication:",
+        await s.page.getByRole("dialog").innerText(),
+      );
+    }
     await s.page
       .getByLabel("Enunciado", { exact: true })
       .fill("Qual solução organiza tags e acionadores no navegador?");
@@ -209,12 +216,19 @@ test("mobile navigation and author permissions remain usable", async () => {
       await s.page.getByRole("button", { name: "Equipe", exact: true }).count(),
       0,
     );
-    assert.equal(
-      await s.page.evaluate(
-        () => document.documentElement.scrollWidth > innerWidth + 1,
-      ),
-      false,
-    );
+    const overflowing = await s.page.evaluate(() => {
+      if (document.documentElement.scrollWidth <= innerWidth + 1) return [];
+      return [...document.querySelectorAll("body *")]
+        .filter((el) => el.getBoundingClientRect().right > innerWidth + 1)
+        .slice(0, 25)
+        .map((el) => ({
+          tag: el.tagName,
+          cls: el.className,
+          right: el.getBoundingClientRect().right,
+          width: el.getBoundingClientRect().width,
+        }));
+    });
+    assert.deepEqual(overflowing, []);
     assert.deepEqual(s.errors, []);
   } finally {
     await s.context.close();
