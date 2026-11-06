@@ -257,6 +257,7 @@ export default function ContentEditor({
               <label>
                 {type === "question" ? "Enunciado" : "Título"}
                 <textarea
+                  aria-label={type === "question" ? "Enunciado" : "Título"}
                   rows={type === "question" ? 3 : 2}
                   value={data.question ?? data.title}
                   onChange={(e) =>

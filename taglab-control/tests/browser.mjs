@@ -174,12 +174,10 @@ test("editor creates a question and reviewer publishes; edits keep the previous 
       ),
     );
     assert.deepEqual(s.errors, []);
-    if ((await s.page.getByLabel("Enunciado", { exact: true }).count()) !== 1) {
-      console.log(
-        "Editor after publication:",
-        await s.page.getByRole("dialog").innerText(),
-      );
-    }
+    assert.equal(
+      await s.page.getByLabel("Enunciado", { exact: true }).count(),
+      1,
+    );
     await s.page
       .getByLabel("Enunciado", { exact: true })
       .fill("Qual solução organiza tags e acionadores no navegador?");

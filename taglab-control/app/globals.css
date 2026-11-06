@@ -472,6 +472,7 @@ small {
   margin: 0;
 }
 .table-wrap {
+  position: relative;
   overflow-x: auto;
 }
 .content-table {
